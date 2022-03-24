@@ -24,8 +24,9 @@ end
 
 # MX Setup
 # persistant data store
-user_guid = 'USR-a236b5f9-5e4b-4520-949f-a64702de2aa7'
-member_guid = 'MBR-308badb0-2f71-438e-bfc6-3da976bf3655'
+# user_guid = 'USR-a236b5f9-5e4b-4520-949f-a64702de2aa7'
+# member_guid = 'MBR-308badb0-2f71-438e-bfc6-3da976bf3655'
+user_guid = nil
 
 ::MxPlatformRuby.configure do |config|
   # Configure with your Client ID/API Key from https://dashboard.mx.com
@@ -39,12 +40,6 @@ end
 api_client = ::MxPlatformRuby::ApiClient.new
 api_client.default_headers['Accept'] = 'application/vnd.mx.api.v1+json'
 mx_platform_api = ::MxPlatformRuby::MxPlatformApi.new(api_client)
-
-# request_body = ::MxPlatformRuby::UserCreateRequestBody.new(
-#   user: ::MxPlatformRuby::UserCreateRequest.new(
-#     metadata: 'Creating a user!'
-#   )
-# )
 
 get '/api/test' do
   { :test => 'hit' }.to_json
@@ -61,17 +56,31 @@ get '/api/users' do
   end
 end
 
-get '/api/get_mxconnect_widget_url' do
+def create_user(user_id, mx_platform_api)
+  request_body = ::MxPlatformRuby::UserCreateRequestBody.new(
+    user: ::MxPlatformRuby::UserCreateRequest.new(
+      id: user_id
+    )
+  )
+  response = mx_platform_api.create_user(request_body)
+  response.user.guid
+end
+
+post '/api/get_mxconnect_widget_url' do
   content_type :json
 
   begin
+    request.body.rewind  # in case someone already read it
+    data = JSON.parse request.body.read
+    external_id = data['user_id'].empty? ? nil : data['user_id']
+    user_guid = create_user(external_id, mx_platform_api)
+
     request_body = ::MxPlatformRuby::WidgetRequestBody.new(
       widget_url: ::MxPlatformRuby::WidgetRequest.new(
         widget_type: 'connect_widget',
         is_mobile_webview: false,
-        mode: 'verfication',
-        ui_message_version: 4,
-        # current_member_guid: member_guid,
+        mode: 'verification',
+        ui_message_version: 4
       )
     )
     response = mx_platform_api.request_widget_url(user_guid, request_body)
@@ -82,12 +91,12 @@ get '/api/get_mxconnect_widget_url' do
   end
 end
 
-get '/api/identity' do
+get '/api/identity/:member_guid' do
   content_type :json
   begin
     # mx_platform_api.identify_member(member_guid, user_guid)
     # poll member status
-    response = mx_platform_api.list_account_owners_by_member(member_guid, user_guid)
+    response = mx_platform_api.list_account_owners_by_member(params['member_guid'], user_guid)
     response.to_json
   rescue ::MxPlatformRuby::ApiError => e
     puts "Error when calling MxPlatformApi->create_user: #{e}"
@@ -108,12 +117,12 @@ get '/api/balances' do
   end
 end
 
-get '/api/auth' do
+get '/api/auth/:member_guid' do
   content_type :json
   begin
     # mx_platform_api.verify_member(member_guid, user_guid)
     # poll member status answer MFAs
-    response = mx_platform_api.list_account_numbers_by_member(member_guid, user_guid)
+    response = mx_platform_api.list_account_numbers_by_member(params['member_guid'], user_guid)
     response.to_json
   rescue ::MxPlatformRuby::ApiError => e
     puts "Error when calling MxPlatformApi->create_user: #{e}"
@@ -121,10 +130,10 @@ get '/api/auth' do
   end
 end
 
-get '/api/transactions' do
+get '/api/transactions/:member_guid' do
   content_type :json
   begin
-    response = mx_platform_api.list_transactions_by_member(member_guid, user_guid)
+    response = mx_platform_api.list_transactions_by_member(params['member_guid'], user_guid)
     response.to_json
   rescue ::MxPlatformRuby::ApiError => e
     puts "Error when calling MxPlatformApi->list_transactions: #{e}"

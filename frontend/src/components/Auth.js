@@ -1,18 +1,18 @@
 import { useState } from 'react';
 
-function Auth() {
+function Auth({memberGuid}) {
   const [isLoading, setIsLoading] = useState(false);
   const [accountNumbers, setAccountNumbers] = useState([]);
 
   const loadAccountNumbers = async () => {
     setIsLoading(true);
-    const response = await fetch(`http://localhost:8000/api/auth`)
-    .then(res => res.json())
-    .then((res) => {
-      console.log('response', res);
-      setAccountNumbers(res.account_numbers);
-      setIsLoading(false);
-    });
+    await fetch(`/api/auth/${memberGuid}`)
+      .then(res => res.json())
+      .then((res) => {
+        console.log('response', res);
+        setAccountNumbers(res.account_numbers);
+        setIsLoading(false);
+      });
   }
 
   return (

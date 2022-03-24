@@ -1,13 +1,13 @@
 // import './App.css';
 import { useState, useEffect } from 'react';
 
-function Transactions() {
+function Transactions({memberGuid}) {
   const [isLoading, setIsLoading] = useState(false);
   const [transactions, setTransactions] = useState([]);
 
   const loadTransactions = async () => {
     setIsLoading(true);
-    const response = await fetch(`http://localhost:8000/api/transactions`)
+    const response = await fetch(`http://localhost:8000/api/transactions/${memberGuid}`)
     .then(res => res.json())
     .then((res) => {
       console.log('response', res);

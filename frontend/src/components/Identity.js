@@ -1,13 +1,13 @@
 // import './App.css';
 import { useState, useEffect } from 'react';
 
-function Identity() {
+function Identity({memberGuid}) {
   const [isLoading, setIsLoading] = useState(false);
   const [accountOwners, setAccountOwners] = useState([]);
 
   const loadAccountOwners = async () => {
     setIsLoading(true);
-    const response = await fetch(`http://localhost:8000/api/identity`)
+    const response = await fetch(`/api/identity/${memberGuid}`)
     .then(res => res.json())
     .then((res) => {
       console.log('response', res);

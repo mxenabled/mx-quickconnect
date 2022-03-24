@@ -6,7 +6,7 @@ function Balances() {
 
   const loadAccounts = async () => {
     setIsLoading(true);
-    const response = await fetch(`http://localhost:8000/api/balances`)
+    const response = await fetch(`/api/balances`)
     .then(res => res.json())
     .then((res) => {
       console.log('response', res);

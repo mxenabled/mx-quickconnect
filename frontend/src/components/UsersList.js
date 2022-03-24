@@ -7,12 +7,12 @@ function UsersList() {
 
   useEffect(async () => {
     setIsLoading(true);
-    const response = await fetch(`http://localhost:8000/api/users`)
-    .then(res => res.json())
-    .then((res) => {
-      console.log('response', res);
-      setUsers(res.users)
-    });
+    await fetch(`http://localhost:8000/api/users`)
+      .then(res => res.json())
+      .then((res) => {
+        console.log('response', res);
+        setUsers(res.users)
+      });
   }, [])
 
   // const loadWidget = async () => {
