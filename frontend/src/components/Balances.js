@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 function Balances() {
   const [isLoading, setIsLoading] = useState(false);

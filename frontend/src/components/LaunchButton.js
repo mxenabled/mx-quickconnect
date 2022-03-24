@@ -1,4 +1,3 @@
-// import './App.css';
 import { useState } from 'react';
 import MXConnectWidget from './MXConnectWidget';
 
@@ -11,7 +10,6 @@ function LaunchButton(props) {
     setIsLoading(true);
     const requestOptions = {
       method: 'POST',
-      // headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
       body: JSON.stringify({ user_id: userId })
     };
     await fetch(`/api/get_mxconnect_widget_url`, requestOptions)
@@ -20,22 +18,21 @@ function LaunchButton(props) {
         setIsLoading(false);
         setConnectWidgetUrl(res?.widget_url?.url)
         console.log('conn widg url', res?.widget_url?.url);
+        console.log(res)
       });
-    // const data = await response.json();
-    // console.log('data', data)
   }
 
   return (
-    <div >
+    <div style={{marginTop: '25px'}}>
       <label>User_id (optional)</label>
       <input type="text" value={userId} onChange={(e) => setUserId(e.target.value)} />
       <br />
-      <button onClick={loadWidget}>Launch MX Connect</button>
+      {!isLoading && connectWidgetUrl === "" && (<button onClick={loadWidget}>Launch MX Connect</button>)}
       {connectWidgetUrl && (
         <MXConnectWidget
           widgetUrl={connectWidgetUrl}
           onEvent={(event) => {
-            console.log('MX message: ', event)
+            console.log('MX PostMessage: ', event)
             if (event.type === 'mx/connect/memberConnected') {
               props.setUserGuid(event.metadata.user_guid)
               props.setMemberGuid(event.metadata.member_guid)

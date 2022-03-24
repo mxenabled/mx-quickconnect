@@ -80,7 +80,8 @@ post '/api/get_mxconnect_widget_url' do
         widget_type: 'connect_widget',
         is_mobile_webview: false,
         mode: 'verification',
-        ui_message_version: 4
+        ui_message_version: 4,
+        include_transactions: true
       )
     )
     response = mx_platform_api.request_widget_url(user_guid, request_body)
@@ -137,6 +138,17 @@ get '/api/transactions/:member_guid' do
     response.to_json
   rescue ::MxPlatformRuby::ApiError => e
     puts "Error when calling MxPlatformApi->list_transactions: #{e}"
+    JSON.parse(err.response_body)
+  end
+end
+
+get '/api/holdings' do
+  content_type :json
+  begin
+    response = mx_platform_api.list_holdings(user_guid)
+    response.to_json
+  rescue ::MxPlatformRuby::ApiError => e
+    puts "Error when calling MxPlatformApi->create_user: #{e}"
     JSON.parse(err.response_body)
   end
 end

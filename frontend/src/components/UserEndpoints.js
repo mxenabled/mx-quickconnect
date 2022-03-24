@@ -1,15 +1,10 @@
-import { useState, useEffect } from 'react';
-
 import Identity from "./Identity";
 import Auth from "./Auth";
 import Balances from "./Balances";
 import Transactions from "./Transactions";
+import Holdings from "./Holdings";
 
 function UserEndpoints({userGuid, memberGuid}) {
-  useEffect(() => {
-    console.log('load endp', userGuid, memberGuid)
-  }, [])
-
   return (
     <div>
       <div>
@@ -20,6 +15,7 @@ function UserEndpoints({userGuid, memberGuid}) {
       <Identity memberGuid={memberGuid} />
       <Balances />
       <Transactions memberGuid={memberGuid} />
+      <Holdings />
     </div>
   );
 }

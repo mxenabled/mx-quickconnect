@@ -1,4 +1,3 @@
-// import './App.css';
 import { useState, useEffect } from 'react';
 
 function UsersList() {
@@ -14,18 +13,6 @@ function UsersList() {
         setUsers(res.users)
       });
   }, [])
-
-  // const loadWidget = async () => {
-  //   console.log('hit')
-  //   setIsLoading(true);
-  //   const response = await fetch(`http://localhost:8000/api/test`)
-  //   .then(res => res.json())
-  //   .then((res) => {
-  //     console.log('second then', res);
-  //   });
-  //   // const data = await response.json();
-  //   // console.log('data', data)
-  // }
 
   return (
     <div >
