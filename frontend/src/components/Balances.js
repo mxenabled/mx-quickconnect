@@ -1,18 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import RunJobAndPoll from "./RunJobAndPoll";
 
-function Balances() {
+function Balances({memberGuid, userGuid}) {
   const [isLoading, setIsLoading] = useState(false);
   const [accounts, setAccounts] = useState([]);
+  const [response, setResponse] = useState(null);
+
+  useEffect(() => {
+    if (response !== null) {
+      console.log('got response holdings', response)
+      setAccounts(response.accounts)
+      setIsLoading(false)
+    }
+  }, [response])
 
   const loadAccounts = async () => {
     setIsLoading(true);
-    const response = await fetch(`/api/balances`)
-    .then(res => res.json())
-    .then((res) => {
-      console.log('response', res);
-      setAccounts(res.accounts);
-      setIsLoading(false);
-    });
   }
 
   return (
@@ -20,7 +23,7 @@ function Balances() {
       <button onClick={loadAccounts} disabled={accounts.length > 0}>
         <h2>Balances /balances</h2>
       </button>
-      <table>
+      <table className="table">
         <tbody>
           <tr>
             <th>Name</th>
@@ -40,7 +43,17 @@ function Balances() {
           })}
         </tbody>
       </table>
-      {isLoading && (<h3>Loading Balances</h3>)}
+      {isLoading && (
+        <div>
+          <span>Loading...</span>
+          <RunJobAndPoll
+            jobType='balances'
+            userGuid={userGuid}
+            setResponse={setResponse}
+            memberGuid={memberGuid}
+          />
+        </div>
+       )}
     </div>
   );
 }

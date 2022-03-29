@@ -12,10 +12,10 @@ function UserEndpoints({userGuid, memberGuid}) {
         <h4>memberGuid: {memberGuid}</h4>
       </div>
       <Auth memberGuid={memberGuid} />
-      <Identity memberGuid={memberGuid} />
-      <Balances />
+      <Identity userGuid={userGuid} memberGuid={memberGuid} />
+      <Balances userGuid={userGuid} memberGuid={memberGuid} />
       <Transactions memberGuid={memberGuid} />
-      <Holdings />
+      <Holdings userGuid={userGuid} memberGuid={memberGuid} />
     </div>
   );
 }

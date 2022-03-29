@@ -1,18 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import RunJobAndPoll from "./RunJobAndPoll";
 
-function Identity({memberGuid}) {
+
+function Identity({memberGuid, userGuid}) {
   const [isLoading, setIsLoading] = useState(false);
   const [accountOwners, setAccountOwners] = useState([]);
+  const [response, setResponse] = useState(null);
+
+  useEffect(() => {
+    if (response !== null) {
+      console.log('got response identity', response)
+      setAccountOwners(response.account_owners)
+      setIsLoading(false)
+    }
+  }, [response])
 
   const loadAccountOwners = async () => {
     setIsLoading(true);
-    const response = await fetch(`/api/identity/${memberGuid}`)
-    .then(res => res.json())
-    .then((res) => {
-      console.log('response', res);
-      setAccountOwners(res.account_owners);
-      setIsLoading(false);
-    });
   }
 
   return (
@@ -20,9 +24,10 @@ function Identity({memberGuid}) {
       <button onClick={loadAccountOwners} disabled={accountOwners.length > 0}>
         <h2>Identity /identity</h2>
       </button>
-      <table>
+      <table className='table'>
         <tbody>
           <tr>
+            <th>Account GUID</th>
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
@@ -31,6 +36,7 @@ function Identity({memberGuid}) {
           {accountOwners.map(accountOwner => {
             return (
               <tr key={accountOwner.guid}>
+                <td>{accountOwner.account_guid}</td>
                 <td>{accountOwner.owner_name}</td>
                 <td>{accountOwner.email}</td>
                 <td>{accountOwner.phone}</td>
@@ -40,7 +46,16 @@ function Identity({memberGuid}) {
           })}
         </tbody>
       </table>
-      {isLoading && (<h3>Loading Account owners</h3>)}
+      {isLoading && (
+        <div>
+          <span>Loading...</span>
+          <RunJobAndPoll
+            jobType='identity'
+            userGuid={userGuid}
+            setResponse={setResponse}
+            memberGuid={memberGuid} />
+        </div>
+      )}
     </div>
   );
 }

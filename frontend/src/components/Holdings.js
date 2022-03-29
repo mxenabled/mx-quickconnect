@@ -1,18 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import RunJobAndPoll from "./RunJobAndPoll";
 
-function Holdings() {
+function Holdings({ memberGuid, userGuid }) {
   const [isLoading, setIsLoading] = useState(false);
   const [holdings, setHoldings] = useState([]);
+  const [response, setResponse] = useState(null);
+
+  useEffect(() => {
+    if (response !== null) {
+      console.log('got response holdings', response)
+      setHoldings(response.holdings)
+      setIsLoading(false)
+    }
+  }, [response])
 
   const loadHoldings = async () => {
     setIsLoading(true);
-    await fetch(`/api/holdings`)
-      .then(res => res.json())
-      .then((res) => {
-        console.log('response', res);
-        setHoldings(res.holdings);
-        setIsLoading(false);
-      });
   }
 
   return (
@@ -20,7 +23,7 @@ function Holdings() {
       <button onClick={loadHoldings} disabled={holdings.length > 0}>
         <h2>Holdings /holdings</h2>
       </button>
-      <table>
+      <table className="table">
         <tbody>
           <tr>
             <th>Name</th>
@@ -40,7 +43,16 @@ function Holdings() {
           })}
         </tbody>
       </table>
-      {isLoading && (<h3>Loading Investment Holdings</h3>)}
+      {isLoading && (
+        <div>
+          <span>Loading...</span>
+          <RunJobAndPoll
+            jobType='holdings'
+            userGuid={userGuid}
+            setResponse={setResponse}
+            memberGuid={memberGuid} />
+        </div>
+      )}
     </div>
   );
 }

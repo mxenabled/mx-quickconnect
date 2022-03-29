@@ -20,7 +20,7 @@ function Auth({memberGuid}) {
       <button onClick={loadAccountNumbers} disabled={accountNumbers.length > 0}>
         <h2>Account Numbers /auth</h2>
       </button>
-      <table>
+      <table className="table">
         <tbody>
           <tr>
             <th>Account Number</th>

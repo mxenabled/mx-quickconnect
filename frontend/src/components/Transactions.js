@@ -6,13 +6,14 @@ function Transactions({memberGuid}) {
 
   const loadTransactions = async () => {
     setIsLoading(true);
-    const response = await fetch(`http://localhost:8000/api/transactions/${memberGuid}`)
-    .then(res => res.json())
-    .then((res) => {
-      console.log('response', res);
-      setTransactions(res.transactions);
-      setIsLoading(false);
-    });
+    console.log('member', memberGuid)
+    await fetch(`/api/transactions/${memberGuid}`)
+      .then(res => res.json())
+      .then((res) => {
+        console.log('response', res);
+        setTransactions(res.transactions);
+        setIsLoading(false);
+      });
   }
 
   return (
@@ -20,7 +21,7 @@ function Transactions({memberGuid}) {
       <button onClick={loadTransactions} disabled={transactions.length > 0}>
         <h2>Transactions /transactions</h2>
       </button>
-      <table>
+      <table className="table">
         <tbody>
           <tr>
             <th>Description</th>
