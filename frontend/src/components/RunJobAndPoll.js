@@ -50,7 +50,7 @@ function RunJobAndPoll({jobType, userGuid, memberGuid, setResponse}) {
 
     setIsLoading(true);
     async function fetchData() {
-      console.log("first hit post on id")
+      console.log(`first hit post on ${jobType}`)
       await fetch(url, { 
           method: 'POST',
           body: JSON.stringify({ 
