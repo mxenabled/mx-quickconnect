@@ -5,4 +5,4 @@ gem "sinatra-cross_origin", "~> 0.3.1"
 
 gem "dotenv", "~> 2.7"
 
-gem 'mx-platform-ruby', path: '~/Projects/mx-platform-ruby'
+gem 'mx-platform-ruby', git: 'https://github.com/mxenabled/mx-platform-ruby/'
