@@ -1,5 +1,6 @@
-PATH
-  remote: ../../mx-platform-ruby
+GIT
+  remote: https://github.com/mxenabled/mx-platform-ruby/
+  revision: b893e2863e69cc341b5bea74e85f7496e58e1b7f
   specs:
     mx-platform-ruby (0.11.2)
       faraday (~> 1.0, >= 1.0.1)
