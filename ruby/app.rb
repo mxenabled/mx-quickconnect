@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Load env vars from .env file
 require 'dotenv'
 Dotenv.load('./../.env')
@@ -43,7 +45,7 @@ api_client.default_headers['Accept'] = 'application/vnd.mx.api.v1+json'
 mx_platform_api = ::MxPlatformRuby::MxPlatformApi.new(api_client)
 
 get '/api/test' do
-  { :test => 'hit' }.to_json
+  { test: 'hit' }.to_json
 end
 
 get '/api/users' do
@@ -73,7 +75,7 @@ post '/api/get_mxconnect_widget_url' do
   content_type :json
 
   begin
-    request.body.rewind  # in case someone already read it
+    request.body.rewind # in case someone already read it
     data = JSON.parse(request.body.read)
     external_id = data['user_id'].empty? ? nil : data['user_id']
 
@@ -137,7 +139,7 @@ end
 post '/api/balances' do
   content_type :json
   begin
-    request.body.rewind  # in case someone already read it
+    request.body.rewind # in case someone already read it
     data = JSON.parse(request.body.read)
 
     response = mx_platform_api.check_balances(data['member_guid'], data['user_guid'])
