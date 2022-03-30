@@ -33,6 +33,9 @@ GEM
     rack (2.2.3)
     rack-protection (2.2.0)
       rack
+    rspec-core (3.11.0)
+      rspec-support (~> 3.11.0)
+    rspec-support (3.11.0)
     ruby2_keywords (0.0.5)
     sinatra (2.2.0)
       mustermann (~> 1.0)
@@ -48,6 +51,7 @@ PLATFORMS
 DEPENDENCIES
   dotenv (~> 2.7)
   mx-platform-ruby
+  rspec-core
   sinatra
   sinatra-cross_origin (~> 0.3.1)
 

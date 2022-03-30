@@ -16,3 +16,8 @@ cd frontend
 npm install
 npm start
 ```
+
+#### Testing
+```bash
+rspec
+```
