@@ -1,7 +1,8 @@
 // Overrides create-react-app webpack configs without ejecting
 // https://github.com/timarney/react-app-rewired
 
-const { override, useBabelRc } = require("customize-cra");
+const { override, useBabelRc, addWebpackModuleRule } = require("customize-cra");
+const path = require("path");
 
 module.exports = override(
   useBabelRc(),
@@ -11,11 +12,10 @@ module.exports = override(
       include: path.resolve(__dirname, 'node_modules/@kyper/'),
       exclude: [/__tests__/],
       loader: 'babel-loader',
-      query: {
+      options: {
          presets: ['@babel/preset-react'],
       },
-   },
-
-    )
+    },
+  )
 )
 

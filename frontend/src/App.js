@@ -19,6 +19,9 @@ function App() {
         <p>MX quickstart app</p>
       </header>
       <div className="body">
+        <Button variant="destructive">
+          Destructive
+        </Button>
         {/* <UsersList /> */}
         {userGuid === null && memberGuid === null ? (
           <LaunchButton setUserGuid={setUserGuid} setMemberGuid={setMemberGuid} />
