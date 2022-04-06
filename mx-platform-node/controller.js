@@ -34,21 +34,41 @@ const configuration = new Configuration({
 const client = new MxPlatformApi(configuration)
 
 app.get('/api/:memberGuid/status', async function(request, response) {
-    const statusResponse = await client.readMemberStatus(request.params.memberGuid, userGuid)
-    response.json (statusResponse.data)
-})
+    try {
+        const statusResponse = await client.readMemberStatus(request.params.memberGuid, userGuid)
+        response.json (statusResponse.data)
 
+    } catch (e) {
+        logAndReturnApiError("readMemberStatus", e, response)
+    }
+})
 app.get('/api/auth/:memberGuid', async function(request, response) {
-    const accountNumbersResponse = await client.listAccountNumbersByMember(request.params.memberGuid, userGuid)
-    response.json(accountNumbersResponse.data)
+    try {
+        const accountNumbersResponse = await client.listAccountNumbersByMember(request.params.memberGuid, userGuid)
+        response.json(accountNumbersResponse.data)
+
+    } catch (e) {
+        logAndReturnApiError("listAccountNumbersByMember", e, response)
+    }
 })
 app.get('/api/balances', async function(request, response) {
-    const listUserAccountsResponse = await client.listUserAccounts(userGuid)
-    response.json(listUserAccountsResponse.data)
+    try {
+        const listUserAccountsResponse = await client.listUserAccounts(userGuid)
+        response.json(listUserAccountsResponse.data)
+
+    } catch (e) {
+        logAndReturnApiError("listUserAccounts", e, response)
+    }
 })
 app.post('/api/balances', async function(request, response) {
-    const balancesResponse = await client.checkBalances(request.body.member_guid, request.body.user_guid)
-    response.json (balancesResponse.data)
+    try {
+        const balancesResponse = await client.checkBalances(request.body.member_guid, request.body.user_guid)
+        response.json (balancesResponse.data)
+
+    } catch (e) {
+        logAndReturnApiError("checkBalances", e, response)
+    }
+
 })
 app.post('/api/get_mxconnect_widget_url', async function(request, response) {
     const createUserRequestBody = {
@@ -77,27 +97,59 @@ app.post('/api/get_mxconnect_widget_url', async function(request, response) {
         response.json(widgetResponse.data)
 
     } catch (e) {
-        response.status(e.response.status).send({ 'errorMessage' : e.response.data.error.message })
+        logAndReturnApiError("requestWidgetURL", e, response)
     }
-
 })
 app.get('/api/holdings', async function(request, response) {
-    const listHoldingsResponse = await client.listHoldings(userGuid)
-    response.json(listHoldingsResponse.data)
+    try {
+        const listHoldingsResponse = await client.listHoldings(userGuid)
+        response.json(listHoldingsResponse.data)
+
+    } catch (e) {
+        logAndReturnApiError("listHoldings", e, response)
+    }
 })
 app.post('/api/holdings', async function(request, response) {
-    const aggregateMemberResponse = await client.aggregateMember(request.body.member_guid, request.body.user_guid)
-    response.json(aggregateMemberResponse.data)
+    try {
+        const aggregateMemberResponse = await client.aggregateMember(request.body.member_guid, request.body.user_guid)
+        response.json(aggregateMemberResponse.data)
+
+    } catch (e) {
+        logAndReturnApiError("aggregateMember", e, response)
+    }
 })
 app.get('/api/identity/:memberGuid', async function(request, response) {
-    const listAccountOwnersResponse = await client.listAccountOwnersByMember(request.params.memberGuid, userGuid)
-    response.json(listAccountOwnersResponse.data)
+    try {
+        const listAccountOwnersResponse = await client.listAccountOwnersByMember(request.params.memberGuid, userGuid)
+        response.json(listAccountOwnersResponse.data)
+    
+    } catch (e) {
+        logAndReturnApiError("listAccountOwnersByMember", e, response)
+    }
+    
 })
 app.post('/api/identity/:memberGuid', async function(request, response) {
-    const identifyMemberResponse = await client.identifyMember(request.params.memberGuid, userGuid)
-    response.json(identifyMemberResponse.data)
+    try {
+        const identifyMemberResponse = await client.identifyMember(request.params.memberGuid, userGuid)
+        response.json(identifyMemberResponse.data)
+
+    } catch (e) {
+        logAndReturnApiError("identifyMember", e, response)
+    }
 })
 app.get('/api/transactions/:memberGuid', async function (request, response) {
-    const listTransactionsResponse = await client.listTransactionsByMember(request.params.memberGuid, userGuid)
-    response.json (listTransactionsResponse.data)
+    try {
+        const listTransactionsResponse = await client.listTransactionsByMember(request.params.memberGuid, userGuid)
+        response.json (listTransactionsResponse.data)
+    
+    } catch (e) {
+        logAndReturnApiError("listTransactionsByMember", e, response)
+    }
 })
+
+
+function logAndReturnApiError(method, e, response) {
+    console.log("Error when calling MxPlatformApi->" + method + ": HTTP "+e.response.status + " "+e.response.statusText)
+    console.log(e.response.data)
+    response.status(e.response.status).send({ 'errorMessage' : e.response.data.error.message })
+}
