@@ -11,6 +11,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 
+var user_guid = null
+
 var listener = app.listen(port, function () {
     console.log('mx-quickstart node backend is listening on port ' + listener.address().port)
 })
@@ -31,6 +33,11 @@ const configuration = new Configuration({
 })
 const client = new MxPlatformApi(configuration)
 
+app.get('/api/auth/:memberGuid', async function(request, response) {
+    const accountNumbersResponse = await client.listAccountNumbersByMember(request.params.memberGuid, user_guid)
+    response.json(accountNumbersResponse.data)
+})
+
 app.post('/api/get_mxconnect_widget_url', async function(request, response) {
     const createUserRequestBody = {
         user: {
@@ -38,6 +45,7 @@ app.post('/api/get_mxconnect_widget_url', async function(request, response) {
         }
     }
     const createUserResponse = await client.createUser(createUserRequestBody)
+    user_guid = createUserResponse.data.user.guid
 
     const widgetRequestBody = {
         widget_url : { 
@@ -50,6 +58,6 @@ app.post('/api/get_mxconnect_widget_url', async function(request, response) {
         }
     }
 
-    const widgetResponse = await client.requestWidgetURL(createUserResponse.data.user.guid, widgetRequestBody)
+    const widgetResponse = await client.requestWidgetURL(user_guid, widgetRequestBody)
     response.json(widgetResponse.data)
 })
