@@ -56,22 +56,30 @@ app.post('/api/get_mxconnect_widget_url', async function(request, response) {
             id: request.body.user_id ? request.body.user_id : null
         }
     }
-    const createUserResponse = await client.createUser(createUserRequestBody)
-    userGuid = createUserResponse.data.user.guid
 
-    const widgetRequestBody = {
-        widget_url : { 
-            include_transactions: true,
-            is_mobile_webview: false,
-            mode: 'verification',
-            ui_message_version: 4,
-            wait_for_full_aggregation: true,
-            widget_type: 'connect_widget'
+    try {
+        const createUserResponse = await client.createUser(createUserRequestBody)
+
+        userGuid = createUserResponse.data.user.guid
+    
+        const widgetRequestBody = {
+            widget_url : { 
+                include_transactions: true,
+                is_mobile_webview: false,
+                mode: 'verification',
+                ui_message_version: 4,
+                wait_for_full_aggregation: true,
+                widget_type: 'connect_widget'
+            }
         }
+    
+        const widgetResponse = await client.requestWidgetURL(userGuid, widgetRequestBody)
+        response.json(widgetResponse.data)
+
+    } catch (e) {
+        response.status(e.response.status).send({ 'errorMessage' : e.response.data.error.message })
     }
 
-    const widgetResponse = await client.requestWidgetURL(userGuid, widgetRequestBody)
-    response.json(widgetResponse.data)
 })
 app.get('/api/holdings', async function(request, response) {
     const listHoldingsResponse = await client.listHoldings(userGuid)
