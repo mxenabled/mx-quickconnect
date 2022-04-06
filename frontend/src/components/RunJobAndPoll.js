@@ -53,6 +53,7 @@ function RunJobAndPoll({jobType, userGuid, memberGuid, setResponse}) {
       console.log(`first hit post on ${jobType}`)
       await fetch(url, { 
           method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
             user_guid: userGuid,
             member_guid: memberGuid 
