@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import MXEndpoint from "./MXEndpoint";
 
 function Transactions({memberGuid}) {
   const [isLoading, setIsLoading] = useState(false);
@@ -6,42 +7,38 @@ function Transactions({memberGuid}) {
 
   const loadTransactions = async () => {
     setIsLoading(true);
-    console.log('member', memberGuid)
     await fetch(`/api/transactions/${memberGuid}`)
       .then(res => res.json())
       .then((res) => {
-        console.log('response', res);
         setTransactions(res.transactions);
         setIsLoading(false);
       });
   }
 
   return (
-    <div className="endpoint">
-      <button onClick={loadTransactions} disabled={transactions.length > 0}>
-        <h2>Transactions /transactions</h2>
-      </button>
-      <table className="table">
-        <tbody>
-          <tr>
-            <th>Description</th>
-            <th>Category</th>
-            <th>Amount</th>
-            <th>Date</th>
-          </tr>
-          {transactions.slice(0,10).map(transaction => {
-            return (
-              <tr key={transaction.guid}>
-                <td>{transaction.description}</td>
-                <td>{transaction.category}</td>
-                <td>{transaction.amount}</td>
-                <td>{transaction.date}</td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-      {isLoading && (<h3>Loading Transactions</h3>)}
+    <div style={{marginTop: '24px'}}>
+      <MXEndpoint
+        title="List Transactions"
+        requestType="Get"
+        requestUrl="/users/{user_guid}/members/{member_guid}/transactions"
+        isLoading={isLoading}
+        subText="Requests to this endpoint return a list of transactions associated with the specified member, across all accounts associated with that member."
+        onAction={loadTransactions}
+        tableData={{
+          headers: ['Description', 'Category', 'Amount', 'Date'],
+          rowData: transactions.slice(0,10).map(transaction => {
+            return ({
+              id: transaction.guid,
+              cols: [
+                transaction.description,
+                transaction.category,
+                transaction.amount,
+                transaction.date,
+              ]
+            })
+          })
+        }}
+      />
     </div>
   );
 }

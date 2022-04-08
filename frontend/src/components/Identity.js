@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import RunJobAndPoll from "./RunJobAndPoll";
+import MXEndpoint from "./MXEndpoint";
 
 
 function Identity({memberGuid, userGuid}) {
@@ -20,41 +21,35 @@ function Identity({memberGuid, userGuid}) {
   }
 
   return (
-    <div className="endpoint">
-      <button onClick={loadAccountOwners} disabled={accountOwners.length > 0}>
-        <h2>Identity /identity</h2>
-      </button>
-      <table className='table'>
-        <tbody>
-          <tr>
-            <th>Account GUID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Address</th>
-          </tr>
-          {accountOwners.map(accountOwner => {
-            return (
-              <tr key={accountOwner.guid}>
-                <td>{accountOwner.account_guid}</td>
-                <td>{accountOwner.owner_name}</td>
-                <td>{accountOwner.email}</td>
-                <td>{accountOwner.phone}</td>
-                <td>{accountOwner.address}</td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+    <div style={{marginTop: '24px'}}>
+      <MXEndpoint
+        title="Identify Member"
+        requestType="POST"
+        requestUrl="/users/{user_guid}/members/{member_guid}/identify"
+        isLoading={isLoading}
+        subText="Retrieve data such as the name, street address, phone number, and email address for all the accounts associated with a particular member."
+        onAction={loadAccountOwners}
+        tableData={{
+          headers: ['Account Guid', 'Name', 'Email', 'Phone'],
+          rowData: accountOwners.map(owner => {
+            return ({
+              id: owner.guid,
+              cols: [
+                owner.account_guid,
+                owner.owner_name,
+                owner.email,
+                owner.phone,
+              ]
+            })
+          })
+        }}
+      />
       {isLoading && (
-        <div>
-          <span>Loading...</span>
-          <RunJobAndPoll
-            jobType='identity'
-            userGuid={userGuid}
-            setResponse={setResponse}
-            memberGuid={memberGuid} />
-        </div>
+        <RunJobAndPoll
+          jobType='identity'
+          userGuid={userGuid}
+          setResponse={setResponse}
+          memberGuid={memberGuid} />
       )}
     </div>
   );
