@@ -38,7 +38,7 @@ function MXConnectWidget({onEvent, widgetUrl}) {
       marginWidth={'0'}
       src={widgetUrl}
       title={'MX Connect Widget'}
-      width={600}
+      width={768}
     />
   )
 }
