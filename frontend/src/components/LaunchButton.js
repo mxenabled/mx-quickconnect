@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import MXConnectWidget from './MXConnectWidget';
+import { List } from '@kyper/list'
+import { Button } from '@kyper/button'
+import { ChevronRight } from '@kyper/icon/ChevronRight'
+import Header from "./Header";
+import { Dots } from '@kyper/progressindicators';
 
-function LaunchButton(props) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [userId, setUserId] = useState("");
+function LaunchButton({ isLoading, setIsLoading, setUserGuid, setMemberGuid }) {
   const [connectWidgetUrl, setConnectWidgetUrl] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -12,7 +15,7 @@ function LaunchButton(props) {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id: userId })
+      body: JSON.stringify({ user_id: "" })
     };
     await fetch(`/api/get_mxconnect_widget_url`, requestOptions)
       .then(res => {
@@ -23,9 +26,8 @@ function LaunchButton(props) {
       })
       .then((res) => {
         setErrorMessage(null);
-        setIsLoading(false);
         setConnectWidgetUrl(res?.widget_url?.url)
-        console.log('conn widg url', res?.widget_url?.url);
+        console.log('Getting connect widget URL', res?.widget_url?.url);
         console.log(res)
       })
       .catch((error) => {
@@ -36,29 +38,57 @@ function LaunchButton(props) {
   }
 
   return (
-    <div style={{marginTop: '25px'}}>
+    <div>
       { errorMessage && (
         <div className="alert alert-danger">
           <strong>Error!</strong> { errorMessage }
         </div>
       )}
-      <label>User_id (optional)</label>
-      <input type="text" value={userId} onChange={(e) => setUserId(e.target.value)} />
-      <br />
-      {!isLoading && connectWidgetUrl === "" && (<button onClick={loadWidget}>Launch MX Connect</button>)}
+      {isLoading && (
+        <div className="loading">
+          <Dots fgColor="#2F73DA" size={32} />
+        </div>
+      )}
+
+      {!isLoading && connectWidgetUrl === "" && (
+        <div>
+          <Header />
+          <div className='mb-44'>
+            <List
+              items={[
+                'Run through MXconnect to add a new User and Member.',
+                'Make API endpoint requests and view results'
+              ]}
+              listType="ol"
+            />
+          </div>
+          <Button onClick={loadWidget} variant="primary">
+            Launch
+            <ChevronRight
+              color="currentColor"
+              height={12}
+              style={{
+                marginLeft: 8
+              }}
+              width={12}
+            />
+          </Button>
+        </div>
+      )}
       {connectWidgetUrl && (
         <MXConnectWidget
           widgetUrl={connectWidgetUrl}
           onEvent={(event) => {
             console.log('MX PostMessage: ', event)
             if (event.type === 'mx/connect/memberConnected') {
-              props.setUserGuid(event.metadata.user_guid)
-              props.setMemberGuid(event.metadata.member_guid)
+              setUserGuid(event.metadata.user_guid)
+              setMemberGuid(event.metadata.member_guid)
+            } else if (event.type === 'mx/connect/loaded') {
+              setIsLoading(false);
             }
           }}
         />
       )}
-      {isLoading && (<h3>Loading</h3>)}
     </div>
   );
 }

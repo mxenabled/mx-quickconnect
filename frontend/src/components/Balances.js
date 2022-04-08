@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import RunJobAndPoll from "./RunJobAndPoll";
+import MXEndpoint from './MXEndpoint';
 
 function Balances({memberGuid, userGuid}) {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,40 +20,36 @@ function Balances({memberGuid, userGuid}) {
   }
 
   return (
-    <div className="endpoint">
-      <button onClick={loadAccounts} disabled={accounts.length > 0}>
-        <h2>Balances /balances</h2>
-      </button>
-      <table className="table">
-        <tbody>
-          <tr>
-            <th>Name</th>
-            <th>Balance</th>
-            <th>Subtype</th>
-            <th>Mask</th>
-          </tr>
-          {accounts.map(account => {
-            return (
-              <tr key={account.guid}>
-                <td>{account.name}</td>
-                <td>{account.available_balance}</td>
-                <td>{account.subtype}</td>
-                <td>{account.account_number.slice(-4)}</td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+    <div style={{marginTop: '24px'}}>
+      <MXEndpoint
+        title="Check Balances"
+        requestType="POST"
+        requestUrl="/users/{user_guid}/members/{member_guid}/check_balance"
+        isLoading={isLoading}
+        subText="This gathers the latest account balance information; it does not gather any transaction data."
+        onAction={loadAccounts}
+        tableData={{
+          headers: ['Name', 'Balance', 'Subtype', 'Mask'],
+          rowData: accounts.map(account => {
+            return ({
+              id: account.guid,
+              cols: [
+                account.name,
+                account.available_balance,
+                account.subtype,
+                account.account_number.slice(-4),
+              ]
+            })
+          })
+        }}
+      />
       {isLoading && (
-        <div>
-          <span>Loading...</span>
-          <RunJobAndPoll
-            jobType='balances'
-            userGuid={userGuid}
-            setResponse={setResponse}
-            memberGuid={memberGuid}
-          />
-        </div>
+        <RunJobAndPoll
+          jobType='balances'
+          userGuid={userGuid}
+          setResponse={setResponse}
+          memberGuid={memberGuid}
+        />
        )}
     </div>
   );

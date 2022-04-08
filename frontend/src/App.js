@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import './App.css';
 import LaunchButton from "./components/LaunchButton";
 import UserEndpoints from "./components/UserEndpoints";
+
 
 function App() {
   // const [userGuid, setUserGuid] = useState('USR-a236b5f9-5e4b-4520-949f-a64702de2aa7');
@@ -11,16 +11,14 @@ function App() {
   // const [memberGuid, setMemberGuid] = useState('MBR-89e28a5d-43b4-46d3-a2fa-88e915791c8e');
   const [userGuid, setUserGuid] = useState(null);
   const [memberGuid, setMemberGuid] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   return (
     <div className="App">
-      <header className="App-header">
-        <p>MX quickstart app</p>
-      </header>
       <div className="body">
-        {/* <UsersList /> */}
         {userGuid === null && memberGuid === null ? (
-          <LaunchButton setUserGuid={setUserGuid} setMemberGuid={setMemberGuid} />
+          <LaunchButton isLoading={isLoading} setIsLoading={setIsLoading} setUserGuid={setUserGuid} setMemberGuid={setMemberGuid} />
         ) :
         (
           <UserEndpoints userGuid={userGuid} memberGuid={memberGuid} />
