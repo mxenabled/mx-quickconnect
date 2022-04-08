@@ -14,6 +14,7 @@ function LaunchButton({ isLoading, setIsLoading, setUserGuid, setMemberGuid }) {
     setIsLoading(true);
     const requestOptions = {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: "" })
     };
     await fetch(`/api/get_mxconnect_widget_url`, requestOptions)
