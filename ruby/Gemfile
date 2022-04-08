@@ -12,4 +12,7 @@ gem 'mx-platform-ruby'
 group :test do
   # Test it with RSpec (BDD for Ruby)
   gem 'rspec-core'
+
+  # Keep files consistent
+  gem 'rubocop', require: false
 end
