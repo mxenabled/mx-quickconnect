@@ -5,6 +5,7 @@ import MXEndpoint from "./MXEndpoint";
 
 function Identity({memberGuid, userGuid}) {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [accountOwners, setAccountOwners] = useState([]);
   const [response, setResponse] = useState(null);
 
@@ -29,6 +30,7 @@ function Identity({memberGuid, userGuid}) {
         isLoading={isLoading}
         subText="Retrieve data such as the name, street address, phone number, and email address for all the accounts associated with a particular member."
         onAction={loadAccountOwners}
+        error={error}
         tableData={{
           headers: ['Account Guid', 'Name', 'Email', 'Phone'],
           rowData: accountOwners.map(owner => {
@@ -49,6 +51,7 @@ function Identity({memberGuid, userGuid}) {
           jobType='identity'
           userGuid={userGuid}
           setResponse={setResponse}
+          setError={setError}
           memberGuid={memberGuid} />
       )}
     </div>

@@ -3,6 +3,8 @@ import { Text } from '@kyper/text'
 import { Tag } from '@kyper/tag'
 import { Button } from '@kyper/button'
 import { Dots } from '@kyper/progressindicators'
+import { Export } from '@kyper/icon/Export'
+
 
 function MXEndpoint({
   title,
@@ -11,11 +13,16 @@ function MXEndpoint({
   subText,
   onAction,
   tableData,
-  isLoading
+  isLoading,
+  error
 }) {
 
   const requestLabel = () => {
-    if (requestType.toLowerCase() === 'post') {
+    if (error != null) {
+      return (
+        <Tag title="Error" variant="error" />
+      )
+    } else if (requestType.toLowerCase() === 'post') {
       return (
         <Tag title="Post" variant="primary" />
       )
@@ -46,13 +53,27 @@ function MXEndpoint({
             </div>
           </div>
           <div style={{display: 'inline-block', float: 'right'}}>
-            <Button onClick={onAction} variant="neutral" size="small" disabled={tableData.rowData.length > 0}>
-              {isLoading ? (
-                <Dots size={16} fgColor="#2F73DA" />
-              ) : (
-                'Send Request'
-              )}
-            </Button>
+            { error == null ? (
+              <Button onClick={onAction} variant="neutral" size="small" disabled={tableData.rowData.length > 0}>
+                {isLoading ? (
+                  <Dots size={16} fgColor="#2F73DA" />
+                ) : (
+                  'Send Request'
+                )}
+              </Button>
+            ) : (
+              <Button onClick={() => window.open(error?.link, '_blank')} variant="primary" size="small">
+                  Learn More
+                  <Export
+                    color="currentColor"
+                    height={12}
+                    style={{
+                      marginLeft: 8
+                    }}
+                    width={12}
+                  />
+              </Button>
+            )}
           </div>
           <div className="mt-20 subtext">
             <Text as="ParagraphSmall" color="secondary" tag="p">
@@ -85,6 +106,36 @@ function MXEndpoint({
             </tr>
           </tfoot>
         </Table>
+      </div>
+      <div className={`mx-endpoint-error ${error != null ? '' : 'hidden' }`}>
+      <Table className={'error-table'} >
+        <tbody>
+          <tr>
+            <td>
+              Error code
+            </td>
+            <td>
+              {error?.code}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Type
+            </td>
+            <td>
+              {error?.type}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Message
+            </td>
+            <td>
+              {error?.message}
+            </td>
+          </tr>
+        </tbody>
+      </Table>
       </div>
     </div>
   )

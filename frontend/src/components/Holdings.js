@@ -3,6 +3,7 @@ import RunJobAndPoll from "./RunJobAndPoll";
 
 function Holdings({ memberGuid, userGuid }) {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [holdings, setHoldings] = useState([]);
   const [response, setResponse] = useState(null);
 
@@ -50,6 +51,7 @@ function Holdings({ memberGuid, userGuid }) {
             jobType='holdings'
             userGuid={userGuid}
             setResponse={setResponse}
+            setError={setError}
             memberGuid={memberGuid} />
         </div>
       )}

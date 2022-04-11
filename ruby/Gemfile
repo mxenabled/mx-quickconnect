@@ -13,3 +13,7 @@ group :test do
   # Test it with RSpec (BDD for Ruby)
   gem 'rspec-core'
 end
+
+gem 'httparty', '~> 0.20.0'
+
+gem 'colorize', '~> 0.8.1'

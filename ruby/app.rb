@@ -3,13 +3,13 @@
 # Load env vars from .env file
 require 'dotenv'
 Dotenv.load('./../.env')
+require_relative 'test-setup'
 
 require 'base64'
 require 'date'
 require 'json'
 require 'sinatra'
 require 'sinatra/cross_origin'
-
 require 'mx-platform-ruby'
 
 set :port, ENV['APP_PORT'] || 8000
@@ -19,7 +19,7 @@ configure do
 end
 
 options '*' do
-  response.headers['Access-Control-Allow-Methods'] = 'HEAD,GET,PUT,POST,DELETE,OPTIONS'
+  response.headers['Access-Control-Allow-Methods'] = 'HEAD,GET,PUT,POST,DELETE'
   response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
   200
 end
@@ -43,6 +43,9 @@ end
 api_client = ::MxPlatformRuby::ApiClient.new
 api_client.default_headers['Accept'] = 'application/vnd.mx.api.v1+json'
 mx_platform_api = ::MxPlatformRuby::MxPlatformApi.new(api_client)
+
+# Checks the env file and production config if in production mode
+test_config(mx_platform_api)
 
 get '/api/test' do
   { test: 'hit' }.to_json

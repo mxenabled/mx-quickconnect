@@ -4,6 +4,7 @@ import MXEndpoint from './MXEndpoint';
 
 function Balances({memberGuid, userGuid}) {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [accounts, setAccounts] = useState([]);
   const [response, setResponse] = useState(null);
 
@@ -28,6 +29,7 @@ function Balances({memberGuid, userGuid}) {
         isLoading={isLoading}
         subText="This gathers the latest account balance information; it does not gather any transaction data."
         onAction={loadAccounts}
+        error={error}
         tableData={{
           headers: ['Name', 'Balance', 'Subtype', 'Mask'],
           rowData: accounts.map(account => {
@@ -49,6 +51,7 @@ function Balances({memberGuid, userGuid}) {
           userGuid={userGuid}
           setResponse={setResponse}
           memberGuid={memberGuid}
+          setError={setError}
         />
        )}
     </div>

@@ -1,5 +1,5 @@
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import MXConnectWidget from './MXConnectWidget';
 
 
@@ -9,10 +9,16 @@ const JOBS = {
   identity: '/api/identity/:member_guid'
 }
 
-function RunJobAndPoll({jobType, userGuid, memberGuid, setResponse}) {
-  let controller = useRef();
-  let signal = useRef();
-  let url = useRef();
+const LINKS = {
+  balances: 'https://docs.mx.com/api#core_resources_members_check_balances',
+  holdings: 'https://docs.mx.com/api#investments_holdings',
+  identity: 'https://docs.mx.com/api#identification_identity'
+}
+
+function RunJobAndPoll({jobType, userGuid, memberGuid, setResponse, setError}) {
+  const controller = new AbortController();
+  const signal = controller.signal;
+  const url = JOBS[jobType].replace(':member_guid', memberGuid);
   const [isChallenged, setIsChallenged] = useState(false)
   const [isConnected, setIsConnected] = useState(false)
   const [connectWidgetUrl, setConnectWidgetUrl] = useState("");
@@ -41,10 +47,6 @@ function RunJobAndPoll({jobType, userGuid, memberGuid, setResponse}) {
   }
 
   useEffect(() => {
-    controller = new AbortController();
-    signal = controller.signal;
-    url = JOBS[jobType].replace(':member_guid', memberGuid);
-
     async function fetchData() {
       console.log(`post request to ${jobType}`)
       await fetch(url, { 
@@ -55,13 +57,23 @@ function RunJobAndPoll({jobType, userGuid, memberGuid, setResponse}) {
             member_guid: memberGuid 
           }) 
         })
-        .then(response => response.json())
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          }
+          throw new Error()
+        })
         .then((response) => {
             pollMemberStatus();
           })
         .catch((error) => {
-          console.error('Error:', error);
-        });;
+          setError({
+            code: '400',
+            type: 'Bad Request',
+            message: 'You dont have access to this premium feature. Or the endpoint is throttled.',
+            link: LINKS[jobType]
+          })
+        });
     }
 
     fetchData();
@@ -70,6 +82,7 @@ function RunJobAndPoll({jobType, userGuid, memberGuid, setResponse}) {
       controller.abort();
       console.log('unmount');
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
