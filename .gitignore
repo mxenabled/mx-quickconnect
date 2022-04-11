@@ -50,3 +50,6 @@ go/quickstart
 
 #vscode
 .vscode
+
+#frontend
+/frontend/build

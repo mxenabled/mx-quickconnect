@@ -8,6 +8,7 @@ Open two terminals, one for the frontend and one for the backend. You can choose
 
 ---
 #### Backend (Ruby)
+
 ```bash
 cd ruby
 bundle install
@@ -26,6 +27,9 @@ This app listens on port 8000.
 
 ---
 #### Frontend
+
+_Make sure you have `npm version 7` or later installed._
+
 ```bash
 cd frontend
 npm install
