@@ -2,7 +2,7 @@ import { Table } from '@kyper/table'
 import { Text } from '@kyper/text'
 import { Tag } from '@kyper/tag'
 import { Button } from '@kyper/button'
-import { Dots } from '@kyper/progressindicators'
+import { Spinner } from '@kyper/progressindicators'
 import { Export } from '@kyper/icon/Export'
 
 
@@ -56,8 +56,8 @@ function MXEndpoint({
             { error == null ? (
               <Button onClick={onAction} variant="neutral" size="small" disabled={tableData.rowData.length > 0}>
                 {isLoading ? (
-                  <div style={{height: '24px',  margin: '0 32px'}}>
-                    <Dots size={16} fgColor="#2F73DA" />
+                  <div style={{ margin: '0 34px'}}>
+                    <Spinner size={24} fgColor="#2F73DA" />
                   </div>
                 ) : (
                   'Send Request'
