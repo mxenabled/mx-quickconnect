@@ -49,6 +49,7 @@ function Balances({memberGuid, userGuid}) {
         <RunJobAndPoll
           jobType='balances'
           userGuid={userGuid}
+          endpoint={`/users/${userGuid}/members/${memberGuid}/check_balance`}
           setResponse={setResponse}
           memberGuid={memberGuid}
           setError={setError}

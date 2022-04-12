@@ -50,6 +50,7 @@ function Holdings({ memberGuid, userGuid }) {
           <RunJobAndPoll
             jobType='holdings'
             userGuid={userGuid}
+            endpoint={``}
             setResponse={setResponse}
             setError={setError}
             memberGuid={memberGuid} />

@@ -49,6 +49,7 @@ function Identity({memberGuid, userGuid}) {
       {isLoading && (
         <RunJobAndPoll
           jobType='identity'
+          endpoint={`/users/${userGuid}/members/${memberGuid}/identify`}
           userGuid={userGuid}
           setResponse={setResponse}
           setError={setError}

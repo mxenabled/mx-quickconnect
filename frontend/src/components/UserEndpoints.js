@@ -37,10 +37,10 @@ function UserEndpoints({userGuid, memberGuid}) {
           Nice work! You have set up a user and member, and can now make the following requests:
         </Text>
       </div>
-      <Verification memberGuid={memberGuid} />
+      <Verification userGuid={userGuid} memberGuid={memberGuid} />
       <Identity userGuid={userGuid} memberGuid={memberGuid} />
       <Balances userGuid={userGuid} memberGuid={memberGuid} />
-      <Transactions memberGuid={memberGuid} />
+      <Transactions userGuid={userGuid} memberGuid={memberGuid} />
       {/* <Holdings userGuid={userGuid} memberGuid={memberGuid} /> */}
     </div>
   );

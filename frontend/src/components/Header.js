@@ -4,7 +4,7 @@ function Header() {
   return (
     <div>
       <Text as="H1" color="primary" tag="p">
-        MXquickstart
+        MXquickconnect
       </Text>
       <div className='mt-8 pb-16 bottom-border'>
         <Text as="Paragraph" color="primary" tag="p">

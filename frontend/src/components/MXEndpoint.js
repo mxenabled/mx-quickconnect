@@ -56,7 +56,9 @@ function MXEndpoint({
             { error == null ? (
               <Button onClick={onAction} variant="neutral" size="small" disabled={tableData.rowData.length > 0}>
                 {isLoading ? (
-                  <Dots size={16} fgColor="#2F73DA" />
+                  <div style={{height: '24px',  margin: '0 32px'}}>
+                    <Dots size={16} fgColor="#2F73DA" />
+                  </div>
                 ) : (
                   'Send Request'
                 )}
@@ -100,7 +102,7 @@ function MXEndpoint({
           </tbody>
           <tfoot>
             <tr>
-              <td colSpan={tableData.rowData.length}>
+              <td colSpan={10}>
                 {`${tableData.rowData.length} rows`}
               </td>
             </tr>

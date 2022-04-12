@@ -25,12 +25,6 @@ options '*' do
 end
 
 # MX Setup
-# persistant data store
-# user_guid = 'USR-a236b5f9-5e4b-4520-949f-a64702de2aa7'
-# member_guid = 'MBR-308badb0-2f71-438e-bfc6-3da976bf3655'
-user_guid = nil
-# user_guid = 'USR-7f418e14-bbac-4801-a8a2-f003c3e868d6'
-
 ::MxPlatformRuby.configure do |config|
   # Configure with your Client ID/API Key from https://dashboard.mx.com
   config.username = ENV['CLIENT_ID']
@@ -104,60 +98,15 @@ post '/api/get_mxconnect_widget_url' do
   end
 end
 
-get '/api/identity/:member_guid' do
+# Verification Endpoint
+# because the connect widget is loaded in Verification mode we don't have to do a POST to verify_member first
+get '/users/:user_guid/members/:member_guid/verify' do
   content_type :json
   begin
-    response = mx_platform_api.list_account_owners_by_member(params['member_guid'], user_guid)
-    response.to_hash.to_json
-  rescue ::MxPlatformRuby::ApiError => e
-    puts "Error when calling MxPlatformApi->list_account_owners_by_member: #{e.message}"
-    [400, e.response_body]
-  end
-end
-
-post '/api/identity/:member_guid' do
-  content_type :json
-  begin
-    response = mx_platform_api.identify_member(params[:member_guid], user_guid)
-    response.to_hash.to_json
-  rescue ::MxPlatformRuby::ApiError => e
-    puts "Error when calling MxPlatformApi->identify_member: #{e.message}"
-    [400, e.response_body]
-  end
-end
-
-get '/api/balances' do
-  content_type :json
-  begin
-    response = mx_platform_api.list_user_accounts(user_guid)
-    response.to_hash.to_json
-  rescue ::MxPlatformRuby::ApiError => e
-    puts "Error when calling MxPlatformApi->list_user_accounts: #{e.message}"
-    [400, e.response_body]
-  end
-end
-
-post '/api/balances' do
-  content_type :json
-  begin
-    request.body.rewind # in case someone already read it
-    data = JSON.parse(request.body.read)
-
-    response = mx_platform_api.check_balances(data['member_guid'], data['user_guid'])
-    response.to_hash.to_json
-  rescue ::MxPlatformRuby::ApiError => e
-    puts "Error when calling MxPlatformApi->check_balances: #{e.message}"
-    [400, e.response_body]
-  end
-end
-
-get '/api/auth/:member_guid' do
-  content_type :json
-  begin
-    # Don't need this if widget runs in verification mode
+    # if widget was not in verification mode
     # mx_platform_api.verify_member(member_guid, user_guid)
     # poll member status answer MFAs
-    response = mx_platform_api.list_account_numbers_by_member(params['member_guid'], user_guid)
+    response = mx_platform_api.list_account_numbers_by_member(params[:member_guid], params[:user_guid])
     response.to_hash.to_json
   rescue ::MxPlatformRuby::ApiError => e
     puts "Error when calling MxPlatformApi->list_account_numbers_by_member: #{e.message}"
@@ -165,10 +114,66 @@ get '/api/auth/:member_guid' do
   end
 end
 
-get '/api/transactions/:member_guid' do
+post '/users/:user_guid/members/:member_guid/identify' do
   content_type :json
   begin
-    response = mx_platform_api.list_transactions_by_member(params['member_guid'], user_guid)
+    response = mx_platform_api.identify_member(
+      params[:member_guid],
+      params[:user_guid]
+    )
+    response.to_hash.to_json
+  rescue ::MxPlatformRuby::ApiError => e
+    puts "Error when calling MxPlatformApi->identify_member: #{e.message}"
+    [400, e.response_body]
+  end
+end
+
+get '/users/:user_guid/members/:member_guid/identify' do
+  content_type :json
+  begin
+    response = mx_platform_api.list_account_owners_by_member(
+      params[:member_guid],
+      params[:user_guid]
+    )
+    response.to_hash.to_json
+  rescue ::MxPlatformRuby::ApiError => e
+    puts "Error when calling MxPlatformApi->list_account_owners_by_member: #{e.message}"
+    [400, e.response_body]
+  end
+end
+
+get '/users/:user_guid/members/:member_guid/check_balance' do
+  content_type :json
+  begin
+    response = mx_platform_api.list_user_accounts(params[:user_guid])
+    response.to_hash.to_json
+  rescue ::MxPlatformRuby::ApiError => e
+    puts "Error when calling MxPlatformApi->list_user_accounts: #{e.message}"
+    [400, e.response_body]
+  end
+end
+
+post '/users/:user_guid/members/:member_guid/check_balance' do
+  content_type :json
+  begin
+    response = mx_platform_api.check_balances(
+      params[:member_guid],
+      params[:user_guid]
+    )
+    response.to_hash.to_json
+  rescue ::MxPlatformRuby::ApiError => e
+    puts "Error when calling MxPlatformApi->check_balances: #{e.message}"
+    [400, e.response_body]
+  end
+end
+
+get '/users/:user_guid/members/:member_guid/transactions' do
+  content_type :json
+  begin
+    response = mx_platform_api.list_transactions_by_member(
+      params[:member_guid],
+      params[:user_guid]
+    )
     response.to_hash.to_json
   rescue ::MxPlatformRuby::ApiError => e
     puts "Error when calling MxPlatformApi->list_transactions_by_member: #{e.message}"
@@ -176,38 +181,43 @@ get '/api/transactions/:member_guid' do
   end
 end
 
-get '/api/holdings' do
+get '/users/:user_guid/members/:member_guid/status' do
   content_type :json
   begin
-    response = mx_platform_api.list_holdings(user_guid)
-    response.to_hash.to_json
-  rescue ::MxPlatformRuby::ApiError => e
-    puts "Error when calling MxPlatformApi->list_holdings: #{e.message}"
-    [400, e.response_body]
-  end
-end
-
-post '/api/holdings' do
-  content_type :json
-  begin
-    request.body.rewind  # in case someone already read it
-    data = JSON.parse(request.body.read)
-
-    response = mx_platform_api.aggregate_member(data['member_guid'], data['user_guid'])
-    response.to_hash.to_json
-  rescue ::MxPlatformRuby::ApiError => e
-    puts "Error when calling MxPlatformApi->list_holdings: #{e.message}"
-    [400, e.response_body]
-  end
-end
-
-get '/api/:member_guid/status' do
-  content_type :json
-  begin
-    response = mx_platform_api.read_member_status(params['member_guid'], user_guid)
+    response = mx_platform_api.read_member_status(
+      params[:member_guid],
+      params[:user_guid]
+    )
     response.to_hash.to_json
   rescue ::MxPlatformRuby::ApiError => e
     puts "Error when calling MxPlatformApi->read_member_status: #{e.message}"
     [400, e.response_body]
   end
 end
+
+# Holdings coming in the future
+# get '/api/holdings' do
+#   content_type :json
+#   begin
+#     response = mx_platform_api.list_holdings(user_guid)
+#     response.to_hash.to_json
+#   rescue ::MxPlatformRuby::ApiError => e
+#     puts "Error when calling MxPlatformApi->list_holdings: #{e.message}"
+#     [400, e.response_body]
+#   end
+# end
+
+# post '/api/holdings' do
+#   content_type :json
+#   begin
+#     request.body.rewind  # in case someone already read it
+#     data = JSON.parse(request.body.read)
+
+#     response = mx_platform_api.aggregate_member(data['member_guid'], data['user_guid'])
+#     response.to_hash.to_json
+#   rescue ::MxPlatformRuby::ApiError => e
+#     puts "Error when calling MxPlatformApi->list_holdings: #{e.message}"
+#     [400, e.response_body]
+#   end
+# end
+

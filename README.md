@@ -1,4 +1,4 @@
-# mx-quickstart
+# MXquickconnect
 
 First create a .env file at the same level as the `.env.example`. Add your `CLIENT_ID` and `API_KEY`
 

@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import MXEndpoint from "./MXEndpoint";
 
-function Transactions({memberGuid}) {
+function Transactions({userGuid, memberGuid}) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [transactions, setTransactions] = useState([]);
 
   const loadTransactions = async () => {
     setIsLoading(true);
-    await fetch(`/api/transactions/${memberGuid}`)
+    await fetch(`/users/${userGuid}/members/${memberGuid}/transactions`)
       .then(res => {
         if (res.ok) {
           return res.json();

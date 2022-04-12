@@ -3,28 +3,28 @@ import { useEffect, useState } from 'react';
 import MXConnectWidget from './MXConnectWidget';
 
 
-const JOBS = {
-  balances: '/api/balances',
-  holdings: '/api/holdings',
-  identity: '/api/identity/:member_guid'
-}
-
 const LINKS = {
   balances: 'https://docs.mx.com/api#core_resources_members_check_balances',
   holdings: 'https://docs.mx.com/api#investments_holdings',
   identity: 'https://docs.mx.com/api#identification_identity'
 }
 
-function RunJobAndPoll({jobType, userGuid, memberGuid, setResponse, setError}) {
+function RunJobAndPoll({
+    jobType,
+    userGuid,
+    memberGuid,
+    setResponse,
+    setError,
+    endpoint
+  }) {
   const controller = new AbortController();
   const signal = controller.signal;
-  const url = JOBS[jobType].replace(':member_guid', memberGuid);
   const [isChallenged, setIsChallenged] = useState(false)
   const [isConnected, setIsConnected] = useState(false)
   const [connectWidgetUrl, setConnectWidgetUrl] = useState("");
 
   const pollMemberStatus = async () => {
-    await fetch(`/api/${memberGuid}/status`, { signal })
+    await fetch(`/users/${userGuid}/members/${memberGuid}/status`, { signal })
       .then(response => response.json())
       .then((response) => {
         console.log('poll member status', response);
@@ -49,7 +49,7 @@ function RunJobAndPoll({jobType, userGuid, memberGuid, setResponse, setError}) {
   useEffect(() => {
     async function fetchData() {
       console.log(`post request to ${jobType}`)
-      await fetch(url, { 
+      await fetch(endpoint, { 
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
@@ -111,7 +111,7 @@ function RunJobAndPoll({jobType, userGuid, memberGuid, setResponse, setError}) {
 
   const getFinalData = async () => {
     console.log('done waiting');
-    await fetch(url)
+    await fetch(endpoint)
       .then(response => response.json())
       .then((response) => {
         console.log('response in final', response);

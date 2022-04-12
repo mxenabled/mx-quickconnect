@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import MXEndpoint from "./MXEndpoint";
 
-function Verification({memberGuid}) {
+function Verification({userGuid, memberGuid}) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [accountNumbers, setAccountNumbers] = useState([]);
 
   const loadAccountNumbers = async () => {
     setIsLoading(true);
-    await fetch(`/api/auth/${memberGuid}`)
+    await fetch(`/users/${userGuid}/members/${memberGuid}/verify`)
       .then(res => {
         if (res.ok) {
           return res.json();
