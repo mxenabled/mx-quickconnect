@@ -11,8 +11,6 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 
-var userGuid = null
-
 var listener = app.listen(port, function () {
     console.log('mx-quickstart node backend is listening on port ' + listener.address().port)
 })
@@ -33,36 +31,36 @@ const configuration = new Configuration({
 })
 const client = new MxPlatformApi(configuration)
 
-app.get('/api/:memberGuid/status', async function(request, response) {
+app.get('/users/:userGuid/members/:memberGuid/status', async function(request, response) {
     try {
-        const statusResponse = await client.readMemberStatus(request.params.memberGuid, userGuid)
+        const statusResponse = await client.readMemberStatus(request.params.memberGuid, request.params.userGuid)
         response.json (statusResponse.data)
 
     } catch (e) {
         logAndReturnApiError("readMemberStatus", e, response)
     }
 })
-app.get('/api/auth/:memberGuid', async function(request, response) {
+app.get('/users/:userGuid/members/:memberGuid', async function(request, response) {
     try {
-        const accountNumbersResponse = await client.listAccountNumbersByMember(request.params.memberGuid, userGuid)
-        response.json(accountNumbersResponse.data)
+        const balancesResponse = await client.checkBalances(request.params.memberGuid, request.params.userGuid)
+        response.json(balancesResponse.data)
 
     } catch (e) {
-        logAndReturnApiError("listAccountNumbersByMember", e, response)
+        logAndReturnApiError("checkBalances", e, response)
     }
 })
-app.get('/api/balances', async function(request, response) {
+app.get('/users/:userGuid/members/:memberGuid/check_balance', async function(request, response) {
     try {
-        const listUserAccountsResponse = await client.listUserAccounts(userGuid)
+        const listUserAccountsResponse = await client.listUserAccounts(request.params.userGuid)
         response.json(listUserAccountsResponse.data)
 
     } catch (e) {
         logAndReturnApiError("listUserAccounts", e, response)
     }
 })
-app.post('/api/balances', async function(request, response) {
+app.post('/users/:userGuid/members/:memberGuid/check_balance', async function(request, response) {
     try {
-        const balancesResponse = await client.checkBalances(request.body.member_guid, request.body.user_guid)
+        const balancesResponse = await client.checkBalances(request.body.memberGuid, request.body.userGuid)
         response.json (balancesResponse.data)
 
     } catch (e) {
@@ -109,18 +107,9 @@ app.get('/api/holdings', async function(request, response) {
         logAndReturnApiError("listHoldings", e, response)
     }
 })
-app.post('/api/holdings', async function(request, response) {
+app.get('/users/:userGuid/members/:memberGuid/identify', async function(request, response) {
     try {
-        const aggregateMemberResponse = await client.aggregateMember(request.body.member_guid, request.body.user_guid)
-        response.json(aggregateMemberResponse.data)
-
-    } catch (e) {
-        logAndReturnApiError("aggregateMember", e, response)
-    }
-})
-app.get('/api/identity/:memberGuid', async function(request, response) {
-    try {
-        const listAccountOwnersResponse = await client.listAccountOwnersByMember(request.params.memberGuid, userGuid)
+        const listAccountOwnersResponse = await client.listAccountOwnersByMember(request.params.memberGuid, request.params.userGuid)
         response.json(listAccountOwnersResponse.data)
     
     } catch (e) {
@@ -128,18 +117,18 @@ app.get('/api/identity/:memberGuid', async function(request, response) {
     }
     
 })
-app.post('/api/identity/:memberGuid', async function(request, response) {
+app.post('/users/:userGuid/members/:memberGuid/identify', async function(request, response) {
     try {
-        const identifyMemberResponse = await client.identifyMember(request.params.memberGuid, userGuid)
+        const identifyMemberResponse = await client.identifyMember(request.params.memberGuid, request.params.userGuid)
         response.json(identifyMemberResponse.data)
 
     } catch (e) {
         logAndReturnApiError("identifyMember", e, response)
     }
 })
-app.get('/api/transactions/:memberGuid', async function (request, response) {
+app.get('/users/:userGuid/members/:memberGuid/transactions', async function (request, response) {
     try {
-        const listTransactionsResponse = await client.listTransactionsByMember(request.params.memberGuid, userGuid)
+        const listTransactionsResponse = await client.listTransactionsByMember(request.params.memberGuid, request.params.userGuid)
         response.json (listTransactionsResponse.data)
     
     } catch (e) {
