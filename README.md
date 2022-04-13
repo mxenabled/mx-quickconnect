@@ -8,6 +8,7 @@ Open two terminals, one for the frontend and one for the backend. You can choose
 
 ---
 #### Backend (Ruby)
+
 ```bash
 cd ruby
 bundle install
