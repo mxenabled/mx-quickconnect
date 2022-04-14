@@ -126,12 +126,12 @@ app.get('/users/:userGuid/members/:memberGuid/transactions', async function (req
 })
 
 function logAndReturnApiError(method, e, response) {
-  if (!e.reponse) {
-    console.log("Error when calling MxPlatformApi->" + e)
+  if (!e.response) {
+    console.log("Error when calling MxPlatformApi->" + method + ": " + e)
     response.status("500").send({ 'errorMessage': e })
     return
   }
   console.log("Error when calling MxPlatformApi->" + method + ": HTTP " + e.response.status + " " + e.response.statusText)
   console.log(e.response.data)
-  response.status(e.response.status).send({ 'errorMessage': e.response.data.error.message })
+  response.status(e.response.status).send({ 'errorMessage': e.response.data })
 }
