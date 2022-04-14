@@ -4,18 +4,30 @@ import { Tag } from '@kyper/tag'
 import { Button } from '@kyper/button'
 import { Spinner } from '@kyper/progressindicators'
 import { Export } from '@kyper/icon/Export'
+import { Code } from '@kyper/icon/Code'
+import { Hamburger } from '@kyper/icon/Hamburger'
 
+import { useState, useEffect } from 'react';
 
 function MXEndpoint({
-  title,
+  jsonData,
+  docsLink,
+  error,
+  isLoading,
+  onAction,
   requestType,
   requestUrl,
   subText,
-  onAction,
+  title,
   tableData,
-  isLoading,
-  error
 }) {
+  const [dataView, setDataView] = useState(null);
+
+  useEffect(() => {
+    if (jsonData != null) {
+      setDataView('table');
+    }
+  }, [jsonData])
 
   const requestLabel = () => {
     if (error != null) {
@@ -79,13 +91,30 @@ function MXEndpoint({
           </div>
           <div className="mt-20 subtext">
             <Text as="ParagraphSmall" color="secondary" tag="p">
-              {subText}
+              {subText + ' '}
+              <a href={docsLink} target="_blank" rel="noreferrer">Visit the docs to learn more.</a>
             </Text>
+          </div>
+          <div className="view-toggle">
+            <div onClick={() => {
+              if (jsonData != null) {
+                setDataView('table')
+              }
+            }} className={`toggle-item ${dataView === 'table' ? ' toggle-item-selected right' : ''} ${jsonData == null ? 'toggle-item-disabled' : ''}`}>
+              <Hamburger height={14} color={`${jsonData == null ? '#A8B1BD' : '#165ECC'}`} />
+            </div>
+            <div onClick={() => {
+              if (jsonData != null) {
+                setDataView('json')
+              }
+            }} className={`toggle-item ${dataView === 'json' ? ' toggle-item-selected left' : ''} ${jsonData == null ? 'toggle-item-disabled' : ''}`}>
+              <Code height={14} color={`${jsonData == null ? '#A8B1BD' : '#165ECC'}`} />
+            </div>
           </div>
         </div>
       </div>
       <div className={`mx-endpoint-table ${tableData.rowData.length > 0 ? '' : 'hidden' }`}>
-        <Table className="" wrapperTag="table">
+        <Table className={`${dataView === 'table' ? '' : 'hidden'}`} wrapperTag="table">
           <thead>
             <tr>
               { tableData.headers.map(header => (<th key={header}>{header}</th>)) }
@@ -108,36 +137,43 @@ function MXEndpoint({
             </tr>
           </tfoot>
         </Table>
+        <div className={`${dataView === 'json' ? '' : 'hidden'}`}>
+          <div className='p-16 bottom-border title-sm'>JSON</div>
+          <pre>
+            { JSON.stringify(jsonData, null, 2) }
+          </pre>
+          <div className='bottom-pre' />
+        </div>
       </div>
       <div className={`mx-endpoint-error ${error != null ? '' : 'hidden' }`}>
-      <Table className={'error-table'} >
-        <tbody>
-          <tr>
-            <td>
-              Error code
-            </td>
-            <td>
-              {error?.code}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Type
-            </td>
-            <td>
-              {error?.type}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Message
-            </td>
-            <td>
-              {error?.message}
-            </td>
-          </tr>
-        </tbody>
-      </Table>
+        <Table className={'error-table'} >
+          <tbody>
+            <tr>
+              <td>
+                Error code
+              </td>
+              <td>
+                {error?.code}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Type
+              </td>
+              <td>
+                {error?.type}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Message
+              </td>
+              <td>
+                {error?.message}
+              </td>
+            </tr>
+          </tbody>
+        </Table>
       </div>
     </div>
   )

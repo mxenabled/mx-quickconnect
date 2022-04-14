@@ -5,6 +5,7 @@ function Transactions({userGuid, memberGuid}) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [transactions, setTransactions] = useState([]);
+  const [jsonData, setJsonData] = useState(null);
 
   const loadTransactions = async () => {
     setIsLoading(true);
@@ -17,6 +18,7 @@ function Transactions({userGuid, memberGuid}) {
       })
       .then((res) => {
         setTransactions(res.transactions);
+        setJsonData(res)
         setIsLoading(false);
       })
       .catch(error => {
@@ -33,6 +35,7 @@ function Transactions({userGuid, memberGuid}) {
   return (
     <div style={{marginTop: '24px'}}>
       <MXEndpoint
+        docsLink={'https://docs.mx.com/api#core_resources_transactions_list_transactions_by_member'}
         title="List Transactions"
         requestType="Get"
         requestUrl="/users/{user_guid}/members/{member_guid}/transactions"
@@ -40,6 +43,7 @@ function Transactions({userGuid, memberGuid}) {
         subText="Requests to this endpoint return a list of transactions associated with the specified member, across all accounts associated with that member."
         onAction={loadTransactions}
         error={error}
+        jsonData={jsonData}
         tableData={{
           headers: ['Description', 'Category', 'Amount', 'Date'],
           rowData: transactions.slice(0,10).map(transaction => {

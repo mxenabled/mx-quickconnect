@@ -24,6 +24,7 @@ function Identity({memberGuid, userGuid}) {
   return (
     <div style={{marginTop: '24px'}}>
       <MXEndpoint
+        docsLink={'https://docs.mx.com/api#identification_identity'}
         title="Identify Member"
         requestType="POST"
         requestUrl="/users/{user_guid}/members/{member_guid}/identify"
@@ -31,6 +32,7 @@ function Identity({memberGuid, userGuid}) {
         subText="Retrieve data such as the name, street address, phone number, and email address for all the accounts associated with a particular member."
         onAction={loadAccountOwners}
         error={error}
+        jsonData={response}
         tableData={{
           headers: ['Account Guid', 'Name', 'Email', 'Phone'],
           rowData: accountOwners.map(owner => {

@@ -6,6 +6,32 @@ hr {
   color: #CDD3DD;
 }
 
+a {
+  color: #165ECC;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+pre {
+  height: 480px;
+  overflow: scroll;
+  font-family: menlo;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+  padding: 12px;
+  margin: 0px;
+}
+
+.bottom-pre {
+  background-color: #EEF1F6;
+  display: block;
+  height: 40px;
+  margin-bottom: -14px;
+  position: relative;
+  top: -14px;
+}
+
 .App {
   margin: 0 auto;
   width: 768px;
@@ -31,6 +57,9 @@ hr {
 .mb-48 {
   margin-bottom: 48px;
 }
+.p-16 {
+  padding: 16px;
+}
 .pb-16 {
   padding-bottom: 16px;
 }
@@ -45,6 +74,49 @@ hr {
 
 .subtext {
   max-width: 560px;
+  display: inline-block;
+}
+
+.view-toggle {
+  width: 64px;
+  height: 32px;
+  float: right;
+  position: relative;
+  bottom: -25px;
+  right: 0px;
+  border: 1px solid #CDD3DD;
+  border-radius: 4px;
+  display: flex;
+}
+
+.toggle-item {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.toggle-item-selected {
+  background-color: #EAF1FB;
+  border: 1px solid #165ECC;
+  border-radius: 4px;
+  position: relative;
+  top: -1px;
+}
+
+.toggle-item-disabled {
+  /* color: #A8B1BD; */
+  cursor: not-allowed;
+}
+
+.right {
+  left: -1px;
+}
+
+.left {
+  right: -1px;
 }
 
 .mx-endpoint-body {
@@ -57,7 +129,6 @@ hr {
 }
 
 .mx-endpoint-table {
-  padding-top: 16px;
   border-left: 1px solid #EEF1F6;
   border-right: 1px solid #EEF1F6;
   border-bottom: 1px solid #EEF1F6;
@@ -109,6 +180,12 @@ tbody tr td:first-child {
 .code-text {
   font-family: menlo !important;
   font-weight: 400;
+}
+
+.title-sm {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 16px;
 }
 
 .loading {
