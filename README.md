@@ -38,7 +38,3 @@ npm start
 This app listens on port 3000 and sends api requests to localhost port 8000.
 
 ---
-#### Testing
-```bash
-rspec
-```
