@@ -11,8 +11,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 
-var listener = app.listen(port, function () {
-    console.log('mx-quickstart node backend is listening on port ' + listener.address().port)
+app.listen(port, function () {
+    console.log(`mx-quickstart node backend is listening on port ${port}`)
 })
 
 const configuration = new Configuration({
