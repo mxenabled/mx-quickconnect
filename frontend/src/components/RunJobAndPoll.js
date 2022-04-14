@@ -47,7 +47,7 @@ function RunJobAndPoll({
   }
 
   useEffect(() => {
-    async function fetchData() {
+    async function initiatePremiumJob() {
       console.log(`post request to ${jobType}`)
       await fetch(endpoint, { 
           method: 'POST',
@@ -76,7 +76,7 @@ function RunJobAndPoll({
         });
     }
 
-    fetchData();
+    initiatePremiumJob();
 
     return () => {
       controller.abort();
@@ -95,7 +95,7 @@ function RunJobAndPoll({
          })
       };
       console.log('open challenged widget')
-      async function fetchData() {
+      async function getWidgetUrl() {
         await fetch(`/api/get_mxconnect_widget_url`, requestOptions)
           .then(res => res.json())
           .then((res) => {
@@ -105,7 +105,7 @@ function RunJobAndPoll({
           });
       }
 
-      fetchData();
+      getWidgetUrl();
     }
   }, [isChallenged, userGuid, memberGuid])
 
