@@ -1,0 +1,19 @@
+{
+  "name": "quickstart",
+  "version": "1.0.0",
+  "description": "A simple node backend for the mx-quickstart app",
+  "main": "controller.js",
+  "scripts": {
+    "start": "nodemon -e js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mxconnect team",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "mx-platform-node": "^0.9.2",
+    "nodemon": "^2.0.15"
+  },
+  "type": "module"
+}
