@@ -4,6 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+const backup = console.warn;
+
+console.error = (msg) => {
+  const supressedKyperErrors = ['cannot appear as a child of']
+  if (!supressedKyperErrors.some(entry => msg.includes(entry))) {
+      backup.apply(console, msg);
+    }
+}
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
