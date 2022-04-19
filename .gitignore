@@ -40,6 +40,9 @@ jspm_packages
 # go
 go/quickstart
 
+#python
+python/__pycache__
+
 # macOS
 **/.DS_Store
 

@@ -5,6 +5,15 @@ First, create a .env file at the same level as the `.env.example`. Add your `CLI
 Open two terminals, one for the frontend and one for the backend. You can choose to run **one** of the following backend implementations:
 * Ruby
 * Node.js
+* Python3
+ ---
+#### Backend (Python)
+```bash
+cd python
+pip3 install -r requirements.txt
+./start.sh
+```
+This app listens on port 8000.
 
 ---
 #### Backend (Ruby)
