@@ -45,16 +45,20 @@ with mx_platform_python.ApiClient(configuration, 'Accept', 'application/vnd.mx.a
       user_guid = response.user.guid
       current_member_guid = request.form.get('current_member_guid')
 
+      widget_request = WidgetRequest(
+        widget_type = 'connect_widget',
+        is_mobile_webview = False,
+        mode = 'verification',
+        ui_message_version = 4,
+        include_transactions = True,
+        wait_for_full_aggregation = True,
+      )
+
+      if current_member_guid:
+        widget_request.current_member_guid = current_member_guid
+
       widget_request_body = WidgetRequestBody(
-        widget_url = WidgetRequest(
-          widget_type = 'connect_widget',
-          is_mobile_webview = False,
-          mode = 'verification',
-          ui_message_version = 4,
-          include_transactions = True,
-          wait_for_full_aggregation = True,
-          current_member_guid = [current_member_guid, ''][current_member_guid is None]
-        )
+        widget_url = widget_request
       )
 
       widget_response = api_instance.request_widget_url(user_guid, widget_request_body)
