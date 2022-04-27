@@ -4,6 +4,8 @@ import { List } from '@kyper/list'
 import { Button } from '@kyper/button'
 import { ChevronRight } from '@kyper/icon/ChevronRight'
 import Header from "./Header";
+import { Table } from '@kyper/table'
+import { Text } from '@kyper/text'
 import { Dots } from '@kyper/progressindicators';
 
 function LaunchButton({ isLoading, setIsLoading, setUserGuid, setMemberGuid }) {
@@ -44,12 +46,6 @@ function LaunchButton({ isLoading, setIsLoading, setUserGuid, setMemberGuid }) {
           <strong>Error!</strong> { errorMessage }
         </div>
       )}
-      {isLoading && (
-        <div className="loading">
-          <Dots fgColor="#2F73DA" size={32} />
-        </div>
-      )}
-
       {!isLoading && connectWidgetUrl === "" && (
         <div>
           <Header />
@@ -76,18 +72,53 @@ function LaunchButton({ isLoading, setIsLoading, setUserGuid, setMemberGuid }) {
         </div>
       )}
       {connectWidgetUrl && (
-        <MXConnectWidget
-          widgetUrl={connectWidgetUrl}
-          onEvent={(event) => {
-            console.log('MX PostMessage: ', event)
-            if (event.type === 'mx/connect/memberConnected') {
-              setUserGuid(event.metadata.user_guid)
-              setMemberGuid(event.metadata.member_guid)
-            } else if (event.type === 'mx/connect/loaded') {
-              setIsLoading(false);
-            }
-          }}
-        />
+        <div>
+          <Table className={'guid-table mb-48'} >
+            <tbody>
+              <tr>
+                <td>
+                  Test Bank
+                </td>
+                <td>
+                  MX Bank, MX Bank (OAuth)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Username
+                </td>
+                <td>
+                  mxuser
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  password
+                </td>
+                <td>
+                  correct, challenge, options, image, <a href="https://docs.mx.com/api/guides/testing#test_credentials" target="_blank" rel="noreferrer">see docs for more scenarios</a>
+                </td>
+              </tr>
+            </tbody>
+          </Table>
+          <MXConnectWidget
+            widgetUrl={connectWidgetUrl}
+            onEvent={(event) => {
+              console.log('MX PostMessage: ', event)
+              if (event.type === 'mx/connect/memberConnected') {
+                setUserGuid(event.metadata.user_guid)
+                setMemberGuid(event.metadata.member_guid)
+              } else if (event.type === 'mx/connect/loaded') {
+                setIsLoading(false);
+              }
+            }}
+          />
+        </div>
+      )}
+      {isLoading && (
+        <div className="loading">
+          <Dots fgColor="#2F73DA" size={32} />
+        </div>
       )}
     </div>
   );
