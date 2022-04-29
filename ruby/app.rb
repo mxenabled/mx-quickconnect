@@ -194,30 +194,3 @@ get '/users/:user_guid/members/:member_guid/status' do
     [400, e.response_body]
   end
 end
-
-# Holdings coming in the future
-# get '/api/holdings' do
-#   content_type :json
-#   begin
-#     response = mx_platform_api.list_holdings(user_guid)
-#     response.to_hash.to_json
-#   rescue ::MxPlatformRuby::ApiError => e
-#     puts "Error when calling MxPlatformApi->list_holdings: #{e.message}"
-#     [400, e.response_body]
-#   end
-# end
-
-# post '/api/holdings' do
-#   content_type :json
-#   begin
-#     request.body.rewind  # in case someone already read it
-#     data = JSON.parse(request.body.read)
-
-#     response = mx_platform_api.aggregate_member(data['member_guid'], data['user_guid'])
-#     response.to_hash.to_json
-#   rescue ::MxPlatformRuby::ApiError => e
-#     puts "Error when calling MxPlatformApi->list_holdings: #{e.message}"
-#     [400, e.response_body]
-#   end
-# end
-

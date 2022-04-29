@@ -11,7 +11,7 @@ function Identity({memberGuid, userGuid}) {
 
   useEffect(() => {
     if (response !== null) {
-      console.log('got response identity', response)
+      console.log('identity response:', response)
       setAccountOwners(response.account_owners)
       setIsLoading(false)
     }
