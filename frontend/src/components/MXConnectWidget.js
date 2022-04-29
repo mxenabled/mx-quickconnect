@@ -29,14 +29,14 @@ function MXConnectWidget({onEvent, widgetUrl}) {
    */
   return (
     <iframe
-      border={'0'}
-      frame={'0'}
-      frameBorder={'0'}
+      border='0'
+      frame='0'
+      frameBorder='0'
       height={650}
-      marginHeight={'0'}
-      marginWidth={'0'}
+      marginHeight='0'
+      marginWidth='0'
       src={widgetUrl}
-      title={'MX Connect Widget'}
+      title='MX Connect Widget'
       width={768}
     />
   )

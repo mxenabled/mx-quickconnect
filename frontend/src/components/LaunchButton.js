@@ -72,7 +72,7 @@ function LaunchButton({ isLoading, setIsLoading, setUserGuid, setMemberGuid }) {
       )}
       {connectWidgetUrl && (
         <div>
-          <Table className={'guid-table mb-48'} >
+          <Table className='guid-table mb-48' >
             <tbody>
               <tr>
                 <td>

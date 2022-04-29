@@ -11,7 +11,7 @@ function UserEndpoints({userGuid, memberGuid}) {
   return (
     <div style={{paddingBottom: '48px'}}>
       <Header />
-      <Table className={'guid-table'} >
+      <Table className='guid-table' >
         <tbody>
           <tr>
             <td>
