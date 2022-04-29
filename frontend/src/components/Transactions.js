@@ -35,7 +35,7 @@ function Transactions({userGuid, memberGuid}) {
   return (
     <div style={{marginTop: '24px'}}>
       <MXEndpoint
-        docsLink={'https://docs.mx.com/api#core_resources_transactions_list_transactions_by_member'}
+        docsLink="https://docs.mx.com/api#core_resources_transactions_list_transactions_by_member"
         title="List Transactions"
         requestType="Get"
         requestUrl="/users/{user_guid}/members/{member_guid}/transactions"

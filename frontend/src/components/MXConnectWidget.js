@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
 function MXConnectWidget({onEvent, widgetUrl}) {
-
-  const [load, setLoad] = useState(false);
 
   useEffect(() => {
     // Add the post message listener
@@ -12,6 +10,7 @@ function MXConnectWidget({onEvent, widgetUrl}) {
       // Make sure to remove the post message listener to avoid multiple messages
       window.removeEventListener('message', onPostMessage);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   /**
@@ -30,14 +29,14 @@ function MXConnectWidget({onEvent, widgetUrl}) {
    */
   return (
     <iframe
-      border={'0'}
-      frame={'0'}
-      frameBorder={'0'}
+      border='0'
+      frame='0'
+      frameBorder='0'
       height={650}
-      marginHeight={'0'}
-      marginWidth={'0'}
+      marginHeight='0'
+      marginWidth='0'
       src={widgetUrl}
-      title={'MX Connect Widget'}
+      title='MX Connect Widget'
       width={768}
     />
   )

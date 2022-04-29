@@ -5,7 +5,6 @@ import { Button } from '@kyper/button'
 import { ChevronRight } from '@kyper/icon/ChevronRight'
 import Header from "./Header";
 import { Table } from '@kyper/table'
-import { Text } from '@kyper/text'
 import { Dots } from '@kyper/progressindicators';
 
 function LaunchButton({ isLoading, setIsLoading, setUserGuid, setMemberGuid }) {
@@ -73,7 +72,7 @@ function LaunchButton({ isLoading, setIsLoading, setUserGuid, setMemberGuid }) {
       )}
       {connectWidgetUrl && (
         <div>
-          <Table className={'guid-table mb-48'} >
+          <Table className='guid-table mb-48' >
             <tbody>
               <tr>
                 <td>

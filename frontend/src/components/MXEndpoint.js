@@ -146,7 +146,7 @@ function MXEndpoint({
         </div>
       </div>
       <div className={`mx-endpoint-error ${error != null ? '' : 'hidden' }`}>
-        <Table className={'error-table'} >
+        <Table className='error-table' >
           <tbody>
             <tr>
               <td>

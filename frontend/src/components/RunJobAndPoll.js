@@ -63,10 +63,10 @@ function RunJobAndPoll({
           }
           throw new Error()
         })
-        .then((response) => {
+        .then((_response) => {
             pollMemberStatus();
           })
-        .catch((error) => {
+        .catch((_error) => {
           setError({
             code: '400',
             type: 'Bad Request',
@@ -110,7 +110,6 @@ function RunJobAndPoll({
   }, [isChallenged, userGuid, memberGuid])
 
   const getFinalData = async () => {
-    console.log('done waiting');
     await fetch(endpoint)
       .then(response => response.json())
       .then((response) => {

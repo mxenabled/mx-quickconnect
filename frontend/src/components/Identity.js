@@ -11,7 +11,7 @@ function Identity({memberGuid, userGuid}) {
 
   useEffect(() => {
     if (response !== null) {
-      console.log('got response identity', response)
+      console.log('identity response:', response)
       setAccountOwners(response.account_owners)
       setIsLoading(false)
     }
@@ -24,7 +24,7 @@ function Identity({memberGuid, userGuid}) {
   return (
     <div style={{marginTop: '24px'}}>
       <MXEndpoint
-        docsLink={'https://docs.mx.com/api#identification_identity'}
+        docsLink="https://docs.mx.com/api#identification_identity"
         title="Identify Member"
         requestType="POST"
         requestUrl="/users/{user_guid}/members/{member_guid}/identify"

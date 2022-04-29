@@ -35,7 +35,7 @@ function Verification({userGuid, memberGuid}) {
 
   return (
     <MXEndpoint
-        docsLink={'https://docs.mx.com/api#verification_mx_widgets'}
+        docsLink="https://docs.mx.com/api#verification_mx_widgets"
         title="Account Verification"
         requestType="POST"
         requestUrl="/users/{user_guid}/members/{member_guid}/verify"

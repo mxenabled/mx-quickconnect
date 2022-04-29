@@ -23,7 +23,7 @@ function Balances({memberGuid, userGuid}) {
   return (
     <div style={{marginTop: '24px'}}>
       <MXEndpoint
-        docsLink={'https://docs.mx.com/api#core_resources_members_check_balances'}
+        docsLink="https://docs.mx.com/api#core_resources_members_check_balances"
         title="Check Balances"
         requestType="POST"
         requestUrl="/users/{user_guid}/members/{member_guid}/check_balance"

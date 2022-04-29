@@ -2,7 +2,6 @@ import Identity from "./Identity";
 import Verification from "./Verification";
 import Balances from "./Balances";
 import Transactions from "./Transactions";
-// import Holdings from "./Holdings";
 import Header from "./Header";
 import { Table } from '@kyper/table'
 import { Text } from '@kyper/text'
@@ -12,7 +11,7 @@ function UserEndpoints({userGuid, memberGuid}) {
   return (
     <div style={{paddingBottom: '48px'}}>
       <Header />
-      <Table className={'guid-table'} >
+      <Table className='guid-table' >
         <tbody>
           <tr>
             <td>
@@ -41,7 +40,6 @@ function UserEndpoints({userGuid, memberGuid}) {
       <Identity userGuid={userGuid} memberGuid={memberGuid} />
       <Balances userGuid={userGuid} memberGuid={memberGuid} />
       <Transactions userGuid={userGuid} memberGuid={memberGuid} />
-      {/* <Holdings userGuid={userGuid} memberGuid={memberGuid} /> */}
     </div>
   );
 }
