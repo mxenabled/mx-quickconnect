@@ -2,16 +2,16 @@ using MX.Platform.CSharp.Api;
 using MX.Platform.CSharp.Client;
 using MX.Platform.CSharp.Model;
 
+// Globals
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
-
-//var config = new Configuration();
 
 var config = builder.Configuration
     .GetSection("MXClientConfiguration").Get<Configuration>();
 
 var apiInstance = new MxPlatformApi(config);
 
+// Api scoped
 app.MapGet("/api/users", () =>
 {
   return apiInstance.ListUsers();
@@ -37,6 +37,7 @@ app.MapPost("/api/get_mxconnect_widget_url/{user_guid}", (string user_guid) =>
   return apiInstance.RequestWidgetURL(user_guid, widgetRequestBody, acceptLanguage);
 });
 
+// Users scoped
 app.MapGet("/users/{user_guid}/members/{member_guid}/verify",
     (string user_guid, string member_guid) =>
 {
