@@ -49,10 +49,6 @@ python/__pycache__
 
 *.iml
 .env
-.idea
-
-#vscode
-.vscode
 
 #frontend
 /frontend/build
