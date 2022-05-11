@@ -1,6 +1,8 @@
 using MX.Platform.CSharp.Api;
 using MX.Platform.CSharp.Client;
 using MX.Platform.CSharp.Model;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 // Globals
 var builder = WebApplication.CreateBuilder(args);
@@ -11,13 +13,13 @@ var config = builder.Configuration
 
 var apiInstance = new MxPlatformApi(config);
 
-// Api scoped
-app.MapGet("/api/users", () =>
+var contractResolver = new DefaultContractResolver
 {
-  return apiInstance.ListUsers();
-});
+  NamingStrategy = new SnakeCaseNamingStrategy()
+};
 
-app.MapPost("/api/users/new", () =>
+// Methods
+UserResponseBody CreateUser()
 {
   var requestBody = new UserCreateRequestBody(
     user: new UserCreateRequest(
@@ -26,57 +28,92 @@ app.MapPost("/api/users/new", () =>
   );
 
   return apiInstance.CreateUser(requestBody);
+};
+
+string SnakeCase(object camelized)
+{
+  return JsonConvert.SerializeObject(camelized, new JsonSerializerSettings
+  {
+    ContractResolver = contractResolver,
+    Formatting = Formatting.Indented
+  });
+};
+
+// Api scoped
+app.MapGet("/api/users", () =>
+{
+  return SnakeCase(apiInstance.ListUsers());
 });
 
-app.MapPost("/api/get_mxconnect_widget_url/{user_guid}", (string user_guid) =>
+app.MapPost("/api/get_mxconnect_widget_url", () =>
 {
   var acceptLanguage = "en-US";
-  var widgetRequest = new WidgetRequest(widgetType: "connect_widget");
+  var widgetRequest = new WidgetRequest(
+      widgetType: "connect_widget",
+      mode: "verification"
+  );
   var widgetRequestBody = new WidgetRequestBody(widgetRequest);
+  var user_guid = CreateUser().User.Guid;
+  var result = apiInstance.RequestWidgetURL(user_guid, widgetRequestBody, acceptLanguage);
 
-  return apiInstance.RequestWidgetURL(user_guid, widgetRequestBody, acceptLanguage);
+  return SnakeCase(result);
 });
 
 // Users scoped
 app.MapGet("/users/{user_guid}/members/{member_guid}/verify",
     (string user_guid, string member_guid) =>
 {
-  return apiInstance.ListAccountNumbersByMember(member_guid, user_guid);
+  var result = apiInstance.ListAccountNumbersByMember(member_guid, user_guid);
+
+  return SnakeCase(result);
 });
 
 app.MapGet("/users/{user_guid}/members/{member_guid}/identify",
     (string user_guid, string member_guid) =>
 {
-  return apiInstance.ListAccountOwnersByMember(member_guid, user_guid);
+  var result = apiInstance.ListAccountOwnersByMember(member_guid, user_guid);
+
+  return SnakeCase(result);
 });
 
 app.MapPost("/users/{user_guid}/members/{member_guid}/identify",
     (string user_guid, string member_guid) =>
 {
-  return apiInstance.IdentifyMember(member_guid, user_guid);
+  var result = apiInstance.IdentifyMember(member_guid, user_guid);
+
+  return SnakeCase(result);
 });
 
 app.MapGet("/users/{user_guid}/members/{member_guid}/check_balance",
     (string user_guid, string member_guid) =>
 {
-  return apiInstance.CheckBalances(member_guid, user_guid);
+  var result = apiInstance.ListUserAccounts(user_guid);
+
+  return SnakeCase(result);
+});
+
+app.MapPost("/users/{user_guid}/members/{member_guid}/check_balance",
+    (string user_guid, string member_guid) =>
+{
+  var result = apiInstance.CheckBalances(member_guid, user_guid);
+
+  return SnakeCase(result);
 });
 
 app.MapGet("/users/{user_guid}/members/{member_guid}/transactions",
     (string user_guid, string member_guid) =>
 {
-  return apiInstance.ListTransactionsByMember(member_guid, user_guid);
-});
+  var result = apiInstance.ListTransactionsByMember(member_guid, user_guid);
 
-app.MapGet("/users/{user_guid}/accounts", (string user_guid) =>
-{
-  return apiInstance.ListUserAccounts(user_guid);
+  return SnakeCase(result);
 });
 
 app.MapGet("/users/{user_guid}/members/{member_guid}/status",
     (string user_guid, string member_guid) =>
 {
-  return apiInstance.ReadMemberStatus(member_guid, user_guid);
+  var result = apiInstance.ReadMemberStatus(member_guid, user_guid);
+
+  return SnakeCase(result);
 });
 
 app.Run();
