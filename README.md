@@ -1,5 +1,7 @@
 # MXquickconnect
 
+MXquickconnect is a sample application which anyone can clone and use their MX client credentials to interface with common MX use cases. It is meant to help a developer see a sample of what MX has to offer while at the same time providing some frontend and backend code which can be extracted into any application.
+
 First, create a .env file at the same level as the `.env.example`. Add your `CLIENT_ID` and `API_KEY`. You can find these values in your [MX Client Dashboard](https://dashboard.mx.com)
 
 Open two terminals, one for the [frontend](#frontend) and one for the backend. You can choose to run **one** of the following backend implementations:
