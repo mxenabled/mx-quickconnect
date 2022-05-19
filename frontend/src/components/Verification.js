@@ -6,6 +6,7 @@ function Verification({userGuid, memberGuid}) {
   const [error, setError] = useState(null);
   const [accountNumbers, setAccountNumbers] = useState([]);
   const [jsonData, setJsonData] = useState(null);
+  const [status, setStatus] = useState(2);
 
   const loadAccountNumbers = async () => {
     setIsLoading(true);
@@ -19,6 +20,7 @@ function Verification({userGuid, memberGuid}) {
       .then((res) => {
         console.log('verification response', res);
         setAccountNumbers(res.account_numbers);
+        setStatus(status + 1);
         setJsonData(res);
         setIsLoading(false);
       })
@@ -36,13 +38,17 @@ function Verification({userGuid, memberGuid}) {
   return (
     <MXEndpoint
         docsLink="https://docs.mx.com/api#verification_mx_widgets"
+        error={error}
+        finalDataUrl="/users/{user_guid}/members/{member_guid}/account_numbers"
+        jobType="Verification"
+        status={status}
+        showNotice={true}
         title="Account Verification"
         requestType="POST"
         requestUrl="/users/{user_guid}/members/{member_guid}/verify"
         isLoading={isLoading}
         subText="Account verification allows you to access account and routing numbers for demand deposit accounts associated with a particular member."
         onAction={loadAccountNumbers}
-        error={error}
         jsonData={jsonData}
         tableData={{
           headers: ['Account Number', 'Routing Number'],

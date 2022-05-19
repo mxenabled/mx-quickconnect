@@ -6,6 +6,7 @@ import { Spinner } from '@kyper/progressindicators'
 import { Export } from '@kyper/icon/Export'
 import { Code } from '@kyper/icon/Code'
 import { Hamburger } from '@kyper/icon/Hamburger'
+import { CheckmarkFilled } from '@kyper/icon/CheckmarkFilled'
 
 import { useState, useEffect } from 'react';
 
@@ -13,10 +14,14 @@ function MXEndpoint({
   jsonData,
   docsLink,
   error,
+  status,
+  finalDataUrl,
   isLoading,
+  jobType,
   onAction,
   requestType,
   requestUrl,
+  showNotice,
   subText,
   title,
   tableData,
@@ -45,6 +50,34 @@ function MXEndpoint({
     }
   }
 
+  const loadingStatusLabel = (currentStatus, statusPoint) => {
+    if (currentStatus > statusPoint) {
+      return (
+        <span className="ml-8"><CheckmarkFilled size={16} color="#2F73DA" /></span>
+        )
+    } else if (isLoading && currentStatus === statusPoint) {
+      return (
+        <span className="ml-8"><Spinner size={16} fgColor="#2F73DA" /></span>
+      )
+    }
+  }
+
+  const getNotice = () => {
+    if (jobType === 'Verification') {
+      return (
+        <span>
+          use <a href="https://docs.mx.com/api#connect_request_a_url" target="_blank" rel="noreferrer">verification mode.</a>
+        </span>
+      )
+    } else {
+      return (
+        <span>
+          <a href="https://docs.mx.com/api#connect_request_a_url" target="_blank" rel="noreferrer">include transactions.</a>
+        </span>
+      )
+    }
+  }
+
   return (
     <div>
       <div className="mx-endpoint-body">
@@ -55,14 +88,46 @@ function MXEndpoint({
                 {title}
               </Text>
             </div>
-            <div className="mt-8">
+            {showNotice && (
+              <Text as="ParagraphSmall" color="secondary" tag="p">
+                Notice: The first two parts were completed automatically in the widget because it was configured to {getNotice()}
+              </Text>
+            )}
+            <div className="mt-8 flex-align">
               <span className='mr-8'>
                 {requestLabel()}
               </span>
               <Text className='code-text' as="ParagraphSmall" color="primary" tag="span">
                 {requestUrl}
               </Text>
+              {loadingStatusLabel(status, 0)}
             </div>
+            {
+              status >= 1 && (
+                <div className="mt-8 flex-align status-step">
+                  <span className='mr-8'>
+                    <Tag title="Get" variant="success" />
+                  </span>
+                  <Text className='code-text' as="ParagraphSmall" color="primary" tag="span">
+                    {'/users/{user_guid}/members/{member_guid}/status'}
+                  </Text>
+                  {loadingStatusLabel(status, 1)}
+                </div>
+              )
+            }
+             {
+              status >= 2 && (
+                <div className="mt-8 flex-align status-step">
+                  <span className='mr-8'>
+                    <Tag title="Get" variant="success" />
+                  </span>
+                  <Text className='code-text' as="ParagraphSmall" color="primary" tag="span">
+                    {finalDataUrl}
+                  </Text>
+                  {loadingStatusLabel(status, 2)}
+                </div>
+              )
+            }
           </div>
           <div style={{display: 'inline-block', float: 'right'}}>
             { error == null ? (
@@ -72,7 +137,7 @@ function MXEndpoint({
                     <Spinner size={24} fgColor="#2F73DA" />
                   </div>
                 ) : (
-                  'Send Request'
+                  `Run ${jobType}`
                 )}
               </Button>
             ) : (
