@@ -30,7 +30,7 @@ UserResponseBody CreateUser()
   return apiInstance.CreateUser(requestBody);
 };
 
-string SnakeCase(object camelized)
+string ConvertToSnakeCase(object camelized)
 {
   return JsonConvert.SerializeObject(camelized, new JsonSerializerSettings
   {
@@ -42,7 +42,7 @@ string SnakeCase(object camelized)
 // Api scoped
 app.MapGet("/api/users", () =>
 {
-  return SnakeCase(apiInstance.ListUsers());
+  return ConvertToSnakeCase(apiInstance.ListUsers());
 });
 
 app.MapPost("/api/get_mxconnect_widget_url", () =>
@@ -56,7 +56,7 @@ app.MapPost("/api/get_mxconnect_widget_url", () =>
   var user_guid = CreateUser().User.Guid;
   var result = apiInstance.RequestWidgetURL(user_guid, widgetRequestBody, acceptLanguage);
 
-  return SnakeCase(result);
+  return ConvertToSnakeCase(result);
 });
 
 // Users scoped
@@ -65,7 +65,7 @@ app.MapGet("/users/{user_guid}/members/{member_guid}/verify",
 {
   var result = apiInstance.ListAccountNumbersByMember(member_guid, user_guid);
 
-  return SnakeCase(result);
+  return ConvertToSnakeCase(result);
 });
 
 app.MapGet("/users/{user_guid}/members/{member_guid}/identify",
@@ -73,7 +73,7 @@ app.MapGet("/users/{user_guid}/members/{member_guid}/identify",
 {
   var result = apiInstance.ListAccountOwnersByMember(member_guid, user_guid);
 
-  return SnakeCase(result);
+  return ConvertToSnakeCase(result);
 });
 
 app.MapPost("/users/{user_guid}/members/{member_guid}/identify",
@@ -81,7 +81,7 @@ app.MapPost("/users/{user_guid}/members/{member_guid}/identify",
 {
   var result = apiInstance.IdentifyMember(member_guid, user_guid);
 
-  return SnakeCase(result);
+  return ConvertToSnakeCase(result);
 });
 
 app.MapGet("/users/{user_guid}/members/{member_guid}/check_balance",
@@ -89,7 +89,7 @@ app.MapGet("/users/{user_guid}/members/{member_guid}/check_balance",
 {
   var result = apiInstance.ListUserAccounts(user_guid);
 
-  return SnakeCase(result);
+  return ConvertToSnakeCase(result);
 });
 
 app.MapPost("/users/{user_guid}/members/{member_guid}/check_balance",
@@ -97,7 +97,7 @@ app.MapPost("/users/{user_guid}/members/{member_guid}/check_balance",
 {
   var result = apiInstance.CheckBalances(member_guid, user_guid);
 
-  return SnakeCase(result);
+  return ConvertToSnakeCase(result);
 });
 
 app.MapGet("/users/{user_guid}/members/{member_guid}/transactions",
@@ -105,7 +105,7 @@ app.MapGet("/users/{user_guid}/members/{member_guid}/transactions",
 {
   var result = apiInstance.ListTransactionsByMember(member_guid, user_guid);
 
-  return SnakeCase(result);
+  return ConvertToSnakeCase(result);
 });
 
 app.MapGet("/users/{user_guid}/members/{member_guid}/status",
@@ -113,7 +113,7 @@ app.MapGet("/users/{user_guid}/members/{member_guid}/status",
 {
   var result = apiInstance.ReadMemberStatus(member_guid, user_guid);
 
-  return SnakeCase(result);
+  return ConvertToSnakeCase(result);
 });
 
 app.Run();
