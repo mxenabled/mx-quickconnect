@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+  aspnet-core:
+    build:
+      context: .
+      dockerfile: mx-platform-aspnet-core/Dockerfile
+    entrypoint: sh -c "dotnet mx-platform-aspnet-core.dll"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=development
+    image: mx-platform-aspnet
+    ports:
+      - 8000:80
