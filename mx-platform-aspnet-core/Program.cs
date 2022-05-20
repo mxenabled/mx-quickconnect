@@ -53,65 +53,65 @@ app.MapPost("/api/get_mxconnect_widget_url", () =>
       mode: "verification"
   );
   var widgetRequestBody = new WidgetRequestBody(widgetRequest);
-  var user_guid = CreateUser().User.Guid;
-  var result = apiInstance.RequestWidgetURL(user_guid, widgetRequestBody, acceptLanguage);
+  var userGuid = CreateUser().User.Guid;
+  var result = apiInstance.RequestWidgetURL(userGuid, widgetRequestBody, acceptLanguage);
 
   return ConvertToSnakeCase(result);
 });
 
 // Users scoped
 app.MapGet("/users/{user_guid}/members/{member_guid}/verify",
-    (string user_guid, string member_guid) =>
+    (string userGuid, string memberGuid) =>
 {
-  var result = apiInstance.ListAccountNumbersByMember(member_guid, user_guid);
+  var result = apiInstance.ListAccountNumbersByMember(memberGuid, userGuid);
 
   return ConvertToSnakeCase(result);
 });
 
 app.MapGet("/users/{user_guid}/members/{member_guid}/identify",
-    (string user_guid, string member_guid) =>
+    (string userGuid, string memberGuid) =>
 {
-  var result = apiInstance.ListAccountOwnersByMember(member_guid, user_guid);
+  var result = apiInstance.ListAccountOwnersByMember(memberGuid, userGuid);
 
   return ConvertToSnakeCase(result);
 });
 
 app.MapPost("/users/{user_guid}/members/{member_guid}/identify",
-    (string user_guid, string member_guid) =>
+    (string userGuid, string memberGuid) =>
 {
-  var result = apiInstance.IdentifyMember(member_guid, user_guid);
+  var result = apiInstance.IdentifyMember(memberGuid, userGuid);
 
   return ConvertToSnakeCase(result);
 });
 
 app.MapGet("/users/{user_guid}/members/{member_guid}/check_balance",
-    (string user_guid, string member_guid) =>
+    (string userGuid, string memberGuid) =>
 {
-  var result = apiInstance.ListUserAccounts(user_guid);
+  var result = apiInstance.ListUserAccounts(userGuid);
 
   return ConvertToSnakeCase(result);
 });
 
 app.MapPost("/users/{user_guid}/members/{member_guid}/check_balance",
-    (string user_guid, string member_guid) =>
+    (string userGuid, string memberGuid) =>
 {
-  var result = apiInstance.CheckBalances(member_guid, user_guid);
+  var result = apiInstance.CheckBalances(memberGuid, userGuid);
 
   return ConvertToSnakeCase(result);
 });
 
 app.MapGet("/users/{user_guid}/members/{member_guid}/transactions",
-    (string user_guid, string member_guid) =>
+    (string userGuid, string memberGuid) =>
 {
-  var result = apiInstance.ListTransactionsByMember(member_guid, user_guid);
+  var result = apiInstance.ListTransactionsByMember(memberGuid, userGuid);
 
   return ConvertToSnakeCase(result);
 });
 
 app.MapGet("/users/{user_guid}/members/{member_guid}/status",
-    (string user_guid, string member_guid) =>
+    (string userGuid, string memberGuid) =>
 {
-  var result = apiInstance.ReadMemberStatus(member_guid, user_guid);
+  var result = apiInstance.ReadMemberStatus(memberGuid, userGuid);
 
   return ConvertToSnakeCase(result);
 });
