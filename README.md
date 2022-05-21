@@ -125,4 +125,6 @@ not like to run. Just make sure you have at least one backend and frontend. Then
 ```bash
 docker-compose up
 ```
+Open your browser on http://localhost:3000 and enjoy!
+
   [MX Client Dashboard]: https://dashboard.mx.com "MX Client Dashboard"
