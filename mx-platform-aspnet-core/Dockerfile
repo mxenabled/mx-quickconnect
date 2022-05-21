@@ -8,9 +8,9 @@ RUN wget https://github.com/mxenabled/mx-platform-csharp/archive/refs/tags/v0.8.
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /source
-COPY *.csproj .
+COPY mx-platform-aspnet-core/*.csproj .
 RUN dotnet restore
-COPY . .
+COPY mx-platform-aspnet-core .
 RUN dotnet add package Json.NET -v 1.0.33
 RUN dotnet publish -c release -o /app --no-restore
 
