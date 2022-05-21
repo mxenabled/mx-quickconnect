@@ -1,8 +1,4 @@
 FROM ruby:2.7.5-slim
-RUN apt -qq update && \
-  apt -y install --no-install-recommends \
-  curl \
-  git
 WORKDIR /app
 COPY ./ruby/Gemfile /app
 COPY ./ruby/Gemfile.lock /app
