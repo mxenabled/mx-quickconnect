@@ -8,7 +8,8 @@ Open two terminals, one for the [frontend](#frontend) and one for the backend. Y
 * [Ruby](#backend-ruby)
 * [Node.js](#backend-nodejs)
 * [Python3](#backend-python)
- ---
+* [DotNet-Core](#backend-aspnet)
+---
 #### Backend (Python)
 ```bash
 cd python
@@ -33,6 +34,18 @@ This app listens on port 8000.
 cd mx-platform-node
 npm install
 npm start
+```
+This app listens on port 8000.
+
+---
+#### Backend (AspNet)
+
+_Make sure you have `dotnet sdk 6` or later installed._
+
+```bash
+cd mx-platform-aspnet-core
+dotnet add package MX.Platform.CSharp
+dotnet run
 ```
 This app listens on port 8000.
 
