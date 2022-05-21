@@ -120,7 +120,7 @@ _Make sure you have `docker comunity 20.10.13 ` and `docker compose 2.3.4`
 or later installed._
 
 Edit your `docker-compose.yml` file and remove or comment out backends you would
-not like to run. Then:
+not like to run. Just make sure you have at least one backend and frontend. Then:
 
 ```bash
 docker-compose up
