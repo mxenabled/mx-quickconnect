@@ -11,6 +11,13 @@ services:
     image: mx-platform-aspnet
     ports:
       - 8000:80
+  python:
+    image: mx-quickstart-python
+    build:
+      context: .
+      dockerfile: ./python/Dockerfile
+    ports:
+      - 8000:8000
   ruby:
     build:
       context: .
