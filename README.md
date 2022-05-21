@@ -10,15 +10,15 @@ application.
 
 <!-- toc -->
 - [1. Clone the repository](#1-clone-the-repository)
-- [2. Set up development environment](#2-set-up-environment)
+- [2. Set up development environment](#2-set-up-development-environment)
 - [3. Run the Quickconnect](#3-run-the-quickconnect)
   - [Run without Docker](#run-without-docker)
     - [1. Running the backend](#1-running-the-backend)
-      - [Ruby][#ruby]
-      - [Python][#python]
-      - [Node][#node]
-      - [DotNet-Core][#dotnet]
-    - [2. Running the frontend](#1-running-the-frontend)
+      * [Ruby](#backend-ruby)
+      * [Node.js](#backend-nodejs)
+      * [Python3](#backend-python)
+      * [DotNet-Core](#backend-aspnet)
+    - [2. Running the frontend](#2-running-the-frontend)
   - [Run with Docker](#run-with-docker)
 <!-- tocstop -->
 
