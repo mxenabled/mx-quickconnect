@@ -11,7 +11,7 @@ application.
 <!-- toc -->
 - [1. Clone the repository](#1-clone-the-repository)
 - [2. Set up development environment](#2-set-up-development-environment)
-- [3. Run the Quickconnect](#3-run-the-quickconnect)
+- [3. Run the MXquickconnect](#3-run-the-mxquickconnect)
   - [Run without Docker](#run-without-docker)
     - [1. Running the backend](#1-running-the-backend)
       * [Ruby](#backend-ruby)
@@ -49,7 +49,7 @@ Create a .env file at the same level as the `.env.example`.
 Add your `CLIENT_ID` and `API_KEY`.
 You can find these values in your [MX Client Dashboard][]
 
-## 3. Run the Quickconnect
+## 3. Run the MXquickconnect
 
 There are two ways of running MX quickconnect app: with or without Docker.
 If you would like to orchestrate with Docker, skip to the
