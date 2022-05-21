@@ -114,4 +114,15 @@ npm start
 
 ---
 
+### Run with Docker
+
+_Make sure you have `docker comunity 20.10.13 ` and `docker compose 2.3.4`
+or later installed._
+
+Edit your `docker-compose.yml` file and remove or comment out backends you would
+not like to run. Then:
+
+```bash
+docker-compose up
+```
   [MX Client Dashboard]: https://dashboard.mx.com "MX Client Dashboard"
