@@ -8,9 +8,16 @@ services:
     entrypoint: sh -c "dotnet mx-platform-aspnet-core.dll"
     environment:
       - ASPNETCORE_ENVIRONMENT=development
-    image: mx-platform-aspnet
+    image: mx-quickstart-aspnet
     ports:
       - 8000:80
+  node:
+    image: mx-quickstart-node
+    build:
+      context: .
+      dockerfile: ./mx-platform-node/Dockerfile
+    ports:
+      - 8000:8000
   python:
     image: mx-quickstart-python
     build:
@@ -19,6 +26,7 @@ services:
     ports:
       - 8000:8000
   ruby:
+    image: mx-quickstart-ruby
     build:
       context: .
       dockerfile: ./ruby/Dockerfile
