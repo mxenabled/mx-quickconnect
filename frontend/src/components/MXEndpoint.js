@@ -6,17 +6,29 @@ import { Spinner } from '@kyper/progressindicators'
 import { Export } from '@kyper/icon/Export'
 import { Code } from '@kyper/icon/Code'
 import { Hamburger } from '@kyper/icon/Hamburger'
+import { CheckmarkFilled } from '@kyper/icon/CheckmarkFilled'
+import EndpointStep from './EndpointStep'
 
 import { useState, useEffect } from 'react';
+
+const STATUS = {
+  TRIGGER_JOB: 0,
+  POLL_MEMBER_STATUS: 1,
+  GET_DATA: 2
+}
 
 function MXEndpoint({
   jsonData,
   docsLink,
   error,
+  status,
+  finalDataUrl,
   isLoading,
+  jobType,
   onAction,
   requestType,
   requestUrl,
+  showNotice,
   subText,
   title,
   tableData,
@@ -45,6 +57,22 @@ function MXEndpoint({
     }
   }
 
+  const loadingStatusLabel = (currentStatus, statusPoint) => {
+    if (currentStatus > statusPoint) {
+      return (
+        <span className="ml-8"><CheckmarkFilled size={16} color="#2F73DA" /></span>
+        )
+    } else if (isLoading && currentStatus === statusPoint) {
+      return (
+        <span className="ml-8"><Spinner size={16} fgColor="#2F73DA" /></span>
+      )
+    }
+  }
+
+  const getNoticeMessage = () => {
+    return jobType === 'Verification' ? "use verification mode" : "include transactions"
+  }
+
   return (
     <div>
       <div className="mx-endpoint-body">
@@ -55,14 +83,34 @@ function MXEndpoint({
                 {title}
               </Text>
             </div>
-            <div className="mt-8">
+            {showNotice && (
+              <Text as="ParagraphSmall" color="secondary" tag="p">
+                Notice: The first two parts were completed automatically in the widget because it was configured to <a href="https://docs.mx.com/api#connect_request_a_url" target="_blank" rel="noreferrer">{getNoticeMessage()}.</a>
+              </Text>
+            )}
+            <div className="mt-8 flex-align">
               <span className='mr-8'>
                 {requestLabel()}
               </span>
               <Text className='code-text' as="ParagraphSmall" color="primary" tag="span">
                 {requestUrl}
               </Text>
+              {loadingStatusLabel(status, STATUS.TRIGGER_JOB)}
             </div>
+            {
+              status >= STATUS.POLL_MEMBER_STATUS && (
+                <EndpointStep
+                  loadingStatusLabel={() => loadingStatusLabel(status, STATUS.POLL_MEMBER_STATUS)}
+                  url="/users/{user_guid}/members/{member_guid}/status" />
+              )
+            }
+             {
+              status >= STATUS.GET_DATA && (
+                <EndpointStep
+                  loadingStatusLabel={() => loadingStatusLabel(status, STATUS.GET_DATA)}
+                  url={finalDataUrl} />
+              )
+            }
           </div>
           <div style={{display: 'inline-block', float: 'right'}}>
             { error == null ? (
@@ -72,7 +120,7 @@ function MXEndpoint({
                     <Spinner size={24} fgColor="#2F73DA" />
                   </div>
                 ) : (
-                  'Send Request'
+                  `Run ${jobType}`
                 )}
               </Button>
             ) : (

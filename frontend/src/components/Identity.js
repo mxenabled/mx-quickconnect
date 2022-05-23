@@ -8,6 +8,7 @@ function Identity({memberGuid, userGuid}) {
   const [error, setError] = useState(null);
   const [accountOwners, setAccountOwners] = useState([]);
   const [response, setResponse] = useState(null);
+  const [status, setStatus] = useState(0);
 
   useEffect(() => {
     if (response !== null) {
@@ -26,6 +27,9 @@ function Identity({memberGuid, userGuid}) {
       <MXEndpoint
         docsLink="https://docs.mx.com/api#identification_identity"
         title="Identify Member"
+        finalDataUrl="/users/{user_guid}/members/{member_guid}/account_owners"
+        jobType="Identity"
+        status={status}
         requestType="POST"
         requestUrl="/users/{user_guid}/members/{member_guid}/identify"
         isLoading={isLoading}
@@ -55,6 +59,7 @@ function Identity({memberGuid, userGuid}) {
           userGuid={userGuid}
           setResponse={setResponse}
           setError={setError}
+          setStatus={setStatus}
           memberGuid={memberGuid} />
       )}
     </div>

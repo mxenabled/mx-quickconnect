@@ -14,6 +14,7 @@ function RunJobAndPoll({
     userGuid,
     memberGuid,
     setResponse,
+    setStatus,
     setError,
     endpoint
   }) {
@@ -32,13 +33,14 @@ function RunJobAndPoll({
           setIsChallenged(true);
           controller.abort();
         } else if (response.member.connection_status === 'CONNECTED') {
+          setStatus(2);
           setIsConnected(true);
           controller.abort();
           // Give it time to load data
-          console.log('member status is connected, waiting 5 secs before retrieving data')
-          setTimeout(getFinalData, 5000);
+          console.log('member status is connected, waiting 2 secs before retrieving data')
+          setTimeout(getFinalData, 2000);
         } else if (response.member.connection_status === 'RESUMED') {
-          // Pool member status every 3 seconds
+          // Poll member status every 3 seconds
           setTimeout(pollMemberStatus, 3000);
         } else {
           console.log("Recieved an expected status", response)
@@ -59,12 +61,13 @@ function RunJobAndPoll({
         })
         .then(response => {
           if (response.ok) {
+            setStatus(1);
             return response.json();
           }
           throw new Error()
         })
         .then((_response) => {
-            pollMemberStatus();
+            setTimeout(pollMemberStatus, 3000);
           })
         .catch((_error) => {
           setError({
@@ -114,6 +117,7 @@ function RunJobAndPoll({
       .then(response => response.json())
       .then((response) => {
         console.log('response in final', response);
+        setStatus(3);
         setResponse(response);
       });
   }

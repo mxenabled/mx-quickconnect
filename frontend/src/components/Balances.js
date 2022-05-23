@@ -7,6 +7,7 @@ function Balances({memberGuid, userGuid}) {
   const [error, setError] = useState(null);
   const [accounts, setAccounts] = useState([]);
   const [response, setResponse] = useState(null);
+  const [status, setStatus] = useState(0);
 
   useEffect(() => {
     if (response !== null) {
@@ -25,6 +26,9 @@ function Balances({memberGuid, userGuid}) {
       <MXEndpoint
         docsLink="https://docs.mx.com/api#core_resources_members_check_balances"
         title="Check Balances"
+        finalDataUrl="/users/{user_guid}/accounts"
+        jobType="Balance"
+        status={status}
         requestType="POST"
         requestUrl="/users/{user_guid}/members/{member_guid}/check_balance"
         isLoading={isLoading}
@@ -54,6 +58,7 @@ function Balances({memberGuid, userGuid}) {
           endpoint={`/users/${userGuid}/members/${memberGuid}/check_balance`}
           setResponse={setResponse}
           memberGuid={memberGuid}
+          setStatus={setStatus}
           setError={setError}
         />
        )}
