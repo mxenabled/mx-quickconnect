@@ -7,8 +7,15 @@ import { Export } from '@kyper/icon/Export'
 import { Code } from '@kyper/icon/Code'
 import { Hamburger } from '@kyper/icon/Hamburger'
 import { CheckmarkFilled } from '@kyper/icon/CheckmarkFilled'
+import EndpointStep from './EndpointStep'
 
 import { useState, useEffect } from 'react';
+
+const STATUS = {
+  TRIGGER_JOB: 0,
+  POLL_MEMBER_STATUS: 1,
+  GET_DATA: 2
+}
 
 function MXEndpoint({
   jsonData,
@@ -62,20 +69,8 @@ function MXEndpoint({
     }
   }
 
-  const getNotice = () => {
-    if (jobType === 'Verification') {
-      return (
-        <span>
-          use <a href="https://docs.mx.com/api#connect_request_a_url" target="_blank" rel="noreferrer">verification mode.</a>
-        </span>
-      )
-    } else {
-      return (
-        <span>
-          <a href="https://docs.mx.com/api#connect_request_a_url" target="_blank" rel="noreferrer">include transactions.</a>
-        </span>
-      )
-    }
+  const getNoticeMessage = () => {
+    return jobType === 'Verification' ? "use verification mode" : "include transactions"
   }
 
   return (
@@ -90,7 +85,7 @@ function MXEndpoint({
             </div>
             {showNotice && (
               <Text as="ParagraphSmall" color="secondary" tag="p">
-                Notice: The first two parts were completed automatically in the widget because it was configured to {getNotice()}
+                Notice: The first two parts were completed automatically in the widget because it was configured to <a href="https://docs.mx.com/api#connect_request_a_url" target="_blank" rel="noreferrer">{getNoticeMessage()}.</a>
               </Text>
             )}
             <div className="mt-8 flex-align">
@@ -100,32 +95,20 @@ function MXEndpoint({
               <Text className='code-text' as="ParagraphSmall" color="primary" tag="span">
                 {requestUrl}
               </Text>
-              {loadingStatusLabel(status, 0)}
+              {loadingStatusLabel(status, STATUS.TRIGGER_JOB)}
             </div>
             {
-              status >= 1 && (
-                <div className="mt-8 flex-align status-step">
-                  <span className='mr-8'>
-                    <Tag title="Get" variant="success" />
-                  </span>
-                  <Text className='code-text' as="ParagraphSmall" color="primary" tag="span">
-                    {'/users/{user_guid}/members/{member_guid}/status'}
-                  </Text>
-                  {loadingStatusLabel(status, 1)}
-                </div>
+              status >= STATUS.POLL_MEMBER_STATUS && (
+                <EndpointStep
+                  loadingStatusLabel={() => loadingStatusLabel(status, STATUS.POLL_MEMBER_STATUS)}
+                  url="/users/{user_guid}/members/{member_guid}/status" />
               )
             }
              {
-              status >= 2 && (
-                <div className="mt-8 flex-align status-step">
-                  <span className='mr-8'>
-                    <Tag title="Get" variant="success" />
-                  </span>
-                  <Text className='code-text' as="ParagraphSmall" color="primary" tag="span">
-                    {finalDataUrl}
-                  </Text>
-                  {loadingStatusLabel(status, 2)}
-                </div>
+              status >= STATUS.GET_DATA && (
+                <EndpointStep
+                  loadingStatusLabel={() => loadingStatusLabel(status, STATUS.GET_DATA)}
+                  url={finalDataUrl} />
               )
             }
           </div>
