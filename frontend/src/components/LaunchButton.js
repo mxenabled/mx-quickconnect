@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MXConnectWidget from './MXConnectWidget';
 import { List } from '@kyper/list'
 import { Button } from '@kyper/button'
@@ -10,13 +10,44 @@ import { Dots } from '@kyper/progressindicators';
 function LaunchButton({ isLoading, setIsLoading, setUserGuid, setMemberGuid }) {
   const [connectWidgetUrl, setConnectWidgetUrl] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
+  const [latestUser, setLatestUser] = useState(null);
 
-  const loadWidget = async () => {
+  useEffect(() => {
+    async function getLatestUser() {
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      };
+      await fetch(`/api/users`, requestOptions)
+        .then(res => {
+          if (res.ok) {
+            return res.json();
+          }
+          throw new Error('Something went wrong')
+        })
+        .then((res) => {
+          setErrorMessage(null);
+            setLatestUser(res?.users[0])
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          console.log('error', error);
+          setErrorMessage(error.message);
+        });
+    }
+    getLatestUser();
+  }, [])
+
+  const loadWidget = async (user_guid) => {
     setIsLoading(true);
+    let body = {
+      user_id: "",
+      ...(user_guid != null && {user_guid: user_guid})
+    }
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id: "" })
+      body: JSON.stringify(body)
     };
     await fetch(`/api/get_mxconnect_widget_url`, requestOptions)
       .then(res => {
@@ -51,23 +82,42 @@ function LaunchButton({ isLoading, setIsLoading, setUserGuid, setMemberGuid }) {
           <div className='mb-44'>
             <List
               items={[
-                'Run through MXconnect to add a new User and Member.',
+                'Run through MXconnect widget to add a new User and Member.',
                 'Make API endpoint requests and view results'
               ]}
               listType="ol"
             />
           </div>
-          <Button onClick={loadWidget} variant="primary">
-            Launch
-            <ChevronRight
-              color="currentColor"
-              height={12}
-              style={{
-                marginLeft: 8
-              }}
-              width={12}
-            />
-          </Button>
+          <div className='flex-align'>
+            <Button onClick={loadWidget} variant="primary">
+              Launch with new user
+              <ChevronRight
+                color="currentColor"
+                height={12}
+                style={{
+                  marginLeft: 8
+                }}
+                width={12}
+              />
+            </Button>
+            {
+              latestUser != null && (
+                <div className='ml-8'>
+                  <Button onClick={() => loadWidget(latestUser?.guid)} variant="primary">
+                    Launch with previous user
+                    <ChevronRight
+                      color="currentColor"
+                      height={12}
+                      style={{
+                        marginLeft: 8
+                      }}
+                      width={12}
+                    />
+                  </Button>
+                </div>
+              )
+            }
+          </div>
         </div>
       )}
       {connectWidgetUrl && (
