@@ -48,6 +48,9 @@ pre {
 .mt-8 {
   margin-top: 8px;
 }
+.mb-8 {
+  margin-bottom: 8px;
+}
 .mt-16 {
   margin-top: 16px;
 }
@@ -70,9 +73,18 @@ pre {
   border-bottom: 1px solid #CDD3DD;
 }
 
+.dashed-border {
+  border: 1px dashed #CDD3DD;
+  border-radius: 4px;
+}
+
 .flex-align {
   display: flex;
   align-items: center;
+}
+
+.flex-center {
+  justify-content: center;
 }
 
 .endpoint-title-url {
@@ -211,6 +223,20 @@ tbody tr td:first-child {
       -ms-animation: fadein 2s; /* Internet Explorer */
        -o-animation: fadein 2s; /* Opera < 12.1 */
           animation: fadein 2s;
+}
+
+.widget-params {
+  overflow: hidden;
+  width: 350px;
+  height: 280px;
+  font-size: 12px;
+  margin: 0 auto 8px;
+  border: 1px solid #CDD3DD;
+  border-radius: 4px;
+}
+.widget-params pre {
+  width: 600px;
+  background-color: rgb(248, 249, 251) !important;
 }
 
 @keyframes fadein {

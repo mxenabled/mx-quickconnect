@@ -7,7 +7,7 @@ import Header from "./Header";
 import { Table } from '@kyper/table'
 import { Dots } from '@kyper/progressindicators';
 
-function LaunchButton({ isLoading, setIsLoading, setUserGuid, setMemberGuid }) {
+function LaunchButton({ isLoading, setIsLoading, setUserGuid, setMemberGuid, memberGuid }) {
   const [connectWidgetUrl, setConnectWidgetUrl] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
   const [latestUser, setLatestUser] = useState(null);
@@ -151,6 +151,7 @@ function LaunchButton({ isLoading, setIsLoading, setUserGuid, setMemberGuid }) {
             </tbody>
           </Table>
           <MXConnectWidget
+            memberGuid={memberGuid}
             widgetUrl={connectWidgetUrl}
             onEvent={(event) => {
               console.log('MX PostMessage: ', event)
