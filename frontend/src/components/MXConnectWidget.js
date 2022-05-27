@@ -6,7 +6,7 @@ import { ChevronUp } from '@kyper/icon/ChevronUp'
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
-function MXConnectWidget({onEvent, widgetUrl, memberGuid}) {
+function MXConnectWidget({onEvent, widgetUrl}) {
   const [isShowingParams, setIsShowingParams] = useState(false);
 
   useEffect(() => {
@@ -28,7 +28,6 @@ function MXConnectWidget({onEvent, widgetUrl, memberGuid}) {
       ui_message_version: 4,
       include_transactions: true,
       wait_for_full_aggregation: true,
-      current_member_guid: memberGuid
     }
   }
 

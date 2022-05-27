@@ -16,7 +16,7 @@ function App() {
     <div className="App">
       <div className="body">
         {userGuid === null && memberGuid === null ? (
-          <LaunchButton isLoading={isLoading} setIsLoading={setIsLoading} setUserGuid={setUserGuid} setMemberGuid={setMemberGuid} memberGuid={memberGuid} />
+          <LaunchButton isLoading={isLoading} setIsLoading={setIsLoading} setUserGuid={setUserGuid} setMemberGuid={setMemberGuid} />
         ) :
         (
           <UserEndpoints userGuid={userGuid} memberGuid={memberGuid} />

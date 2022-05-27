@@ -45,6 +45,18 @@ get '/api/test' do
   { test: 'hit' }.to_json
 end
 
+def create_user(user_id, mx_platform_api)
+  user_request = ::MxPlatformRuby::UserCreateRequest.new(
+    is_disabled: false
+  )
+  user_request.id = user_id unless user_id.nil?
+  request_body = ::MxPlatformRuby::UserCreateRequestBody.new(
+    user: user_request
+  )
+  response = mx_platform_api.create_user(request_body)
+  response.user.guid
+end
+
 get '/api/users' do
   content_type :json
   begin
@@ -56,16 +68,14 @@ get '/api/users' do
   end
 end
 
-def create_user(user_id, mx_platform_api)
-  user_request = ::MxPlatformRuby::UserCreateRequest.new(
-    is_disabled: false
-  )
-  user_request.id = user_id unless user_id.nil?
-  request_body = ::MxPlatformRuby::UserCreateRequestBody.new(
-    user: user_request
-  )
-  response = mx_platform_api.create_user(request_body)
-  response.user.guid
+delete '/api/user/:guid' do
+  begin
+    mx_platform_api.delete_user(params[:guid])
+    { :user_guid => params[:guid] }.to_json
+  rescue ::MxPlatformRuby::ApiError => e
+    puts "Error when calling MxPlatformApi->delete_user: #{e.message}"
+    [400, e.response_body]
+  end
 end
 
 post '/api/get_mxconnect_widget_url' do

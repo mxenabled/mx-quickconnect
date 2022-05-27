@@ -9,9 +9,9 @@ import { Text } from '@kyper/text'
 
 function UserEndpoints({userGuid, memberGuid}) {
   return (
-    <div style={{paddingBottom: '48px'}}>
+    <div className="mb-48">
       <Header />
-      <Table className='guid-table' >
+      <Table className='guid-table mt-48' >
         <tbody>
           <tr>
             <td>
