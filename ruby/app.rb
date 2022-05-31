@@ -80,7 +80,6 @@ end
 
 post '/api/get_mxconnect_widget_url' do
   content_type :json
-
   begin
     request.body.rewind # in case someone already read it
     data = JSON.parse(request.body.read)

@@ -32,17 +32,36 @@ const configuration = new Configuration({
 
 const client = new MxPlatformApi(configuration)
 
-app.post('/api/get_mxconnect_widget_url', async function (request, response) {
-  const createUserRequestBody = {
-    user: {
-      id: request.body.user_id ? request.body.user_id : null
-    }
-  }
-
+app.get('/api/users', async function (_request, response) {
   try {
-    const createUserResponse = await client.createUser(createUserRequestBody)
+    const listUsersResponse = await client.listUsers()
+    response.json(listUsersResponse.data)
+  } catch (e) {
+    logAndReturnApiError("listUserAccounts", e, response)
+  }
+})
 
-    let userGuid = createUserResponse.data.user.guid
+app.delete('/api/user/:userGuid', async function (request, response) {
+  try {
+    await client.deleteUser(request.params.userGuid)
+    response.json({ user_guid: request.params.userGuid })
+  } catch (e) {
+    logAndReturnApiError("listUserAccounts", e, response)
+  }
+})
+
+app.post('/api/get_mxconnect_widget_url', async function (request, response) {
+  try {
+    let userGuid = request.body.user_guid
+    if (userGuid == null) {
+      const createUserRequestBody = {
+        user: {
+          id: request.body.user_id ? request.body.user_id : null
+        }
+      }
+      const createUserResponse = await client.createUser(createUserRequestBody)
+      userGuid = createUserResponse.data.user.guid
+    }
 
     const widgetRequestBody = {
       widget_url: {

@@ -31,18 +31,38 @@ with mx_platform_python.ApiClient(configuration, 'Accept', 'application/vnd.mx.a
       print("Exception when calling MxPlatformApi->list_users: %s\n" % e)
       abort(400)
 
+  @app.route('/api/users', methods=['GET'])
+  def get_users():
+    try:
+      response = api_instance.list_users()
+      return response.to_dict()
+    except mx_platform_python.ApiException as e:
+      print("Exception when calling MxPlatformApi->list_users: %s\n" % e)
+      abort(400)
+
+  @app.route('/api/user/<guid>', methods=['DELETE'])
+  def delete_user(guid):
+    try:
+      api_instance.delete_user(guid)
+      return { "user_guid": guid }
+    except mx_platform_python.ApiException as e:
+      print("Exception when calling MxPlatformApi->list_users: %s\n" % e)
+      abort(400)
+
   @app.route('/api/get_mxconnect_widget_url', methods=['POST'])
   def get_mxconnect_widget_url():
-    request_body = UserCreateRequestBody(
-      user = UserCreateRequest(
-        metadata = ''
-      )
-    )
-
     try:
-      response = api_instance.create_user(request_body)
+      user_guid = request.json.get('user_guid')
 
-      user_guid = response.user.guid
+      if user_guid is None:
+        request_body = UserCreateRequestBody(
+          user = UserCreateRequest(
+            metadata = ''
+          )
+        )
+        response = api_instance.create_user(request_body)
+        user_guid = response.user.guid
+
       current_member_guid = request.form.get('current_member_guid')
 
       widget_request = WidgetRequest(
