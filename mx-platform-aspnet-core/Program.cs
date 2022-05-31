@@ -3,6 +3,10 @@ using MX.Platform.CSharp.Client;
 using MX.Platform.CSharp.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System;
+using dotenv.net;
+
+DotEnv.Load(options: new DotEnvOptions(envFilePaths: new[] {"./../.env"}));
 
 // Globals
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +14,8 @@ var app = builder.Build();
 
 var config = builder.Configuration
     .GetSection("MXClientConfiguration").Get<Configuration>();
+config.Username = Environment.GetEnvironmentVariable("CLIENT_ID");
+config.Password = Environment.GetEnvironmentVariable("API_KEY");
 
 var apiInstance = new MxPlatformApi(config);
 
