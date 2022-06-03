@@ -51,15 +51,27 @@ app.MapGet("/api/users", () =>
   return ConvertToSnakeCase(apiInstance.ListUsers());
 });
 
-app.MapPost("/api/get_mxconnect_widget_url", () =>
+app.MapDelete("/api/user/{guid}", (string guid) =>
+{
+  apiInstance.DeleteUser(guid);
+  return JsonConvert.SerializeObject(new { user_guid = guid });
+});
+
+app.MapPost("/api/get_mxconnect_widget_url", (Request request) =>
 {
   var acceptLanguage = "en-US";
   var widgetRequest = new WidgetRequest(
       widgetType: "connect_widget",
-      mode: "verification"
+      mode: "verification",
+      uiMessageVersion: 4,
+      waitForFullAggregation: true,
+      includeTransactions: true
   );
   var widgetRequestBody = new WidgetRequestBody(widgetRequest);
-  var userGuid = CreateUser().User.Guid;
+  var userGuid = request.user_guid;
+  if (userGuid == null) {
+    userGuid = CreateUser().User.Guid;
+  }
   var result = apiInstance.RequestWidgetURL(userGuid, widgetRequestBody, acceptLanguage);
 
   return ConvertToSnakeCase(result);
@@ -123,3 +135,9 @@ app.MapGet("/users/{userGuid}/members/{memberGuid}/status",
 });
 
 app.Run();
+
+public class Request
+{
+  public string? user_guid { get; set; }
+  public string? user_id { get; set; }
+};
