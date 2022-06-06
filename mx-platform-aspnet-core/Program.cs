@@ -68,7 +68,7 @@ app.MapPost("/api/get_mxconnect_widget_url", (Request request) =>
       includeTransactions: true
   );
   var widgetRequestBody = new WidgetRequestBody(widgetRequest);
-  var userGuid = request.user_guid;
+  var userGuid = request.UserGuid;
   if (userGuid == null) {
     userGuid = CreateUser().User.Guid;
   }
@@ -138,6 +138,6 @@ app.Run();
 
 public class Request
 {
-  public string? user_guid { get; set; }
-  public string? user_id { get; set; }
+  public string? UserGuid { get; set; }
+  public string? UserId { get; set; }
 };
