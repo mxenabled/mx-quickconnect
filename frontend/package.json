@@ -18,7 +18,6 @@
     "react-scripts": "5.0.0",
     "web-vitals": "^2.1.4"
   },
-  "proxy": "http://localhost:8000",
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
@@ -50,6 +49,7 @@
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "customize-cra": "^1.0.0",
+    "http-proxy-middleware": "^2.0.6",
     "react-app-rewired": "^2.2.1"
   }
 }
