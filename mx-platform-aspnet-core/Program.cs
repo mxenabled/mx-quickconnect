@@ -138,6 +138,9 @@ app.Run();
 
 public class Request
 {
+  [JsonProperty("user_guid")]
   public string? UserGuid { get; set; }
+
+  [JsonProperty("user_id")]
   public string? UserId { get; set; }
 };
