@@ -23,6 +23,14 @@ pre {
   margin: 0px;
 }
 
+.align-right {
+  text-align: right !important;
+}
+
+.btn {
+  cursor: pointer;
+}
+
 .bottom-pre {
   background-color: #EEF1F6;
   display: block;
@@ -48,6 +56,9 @@ pre {
 .mt-8 {
   margin-top: 8px;
 }
+.mb-8 {
+  margin-bottom: 8px;
+}
 .mt-16 {
   margin-top: 16px;
 }
@@ -60,6 +71,9 @@ pre {
 .mb-48 {
   margin-bottom: 48px;
 }
+.mt-48 {
+  margin-top: 48px;
+}
 .p-16 {
   padding: 16px;
 }
@@ -70,9 +84,18 @@ pre {
   border-bottom: 1px solid #CDD3DD;
 }
 
+.dashed-border {
+  border: 1px dashed #CDD3DD;
+  border-radius: 4px;
+}
+
 .flex-align {
   display: flex;
   align-items: center;
+}
+
+.flex-center {
+  justify-content: center;
 }
 
 .endpoint-title-url {
@@ -165,7 +188,6 @@ tbody tr td:first-child {
   border: 1px solid #EEF1F6;
   border-bottom: none;
   border-radius: 4px;
-  margin-top: 48px;
   font-family: menlo;
 }
 
@@ -211,6 +233,24 @@ tbody tr td:first-child {
       -ms-animation: fadein 2s; /* Internet Explorer */
        -o-animation: fadein 2s; /* Opera < 12.1 */
           animation: fadein 2s;
+}
+
+.widget-params {
+  border: 1px solid #CDD3DD;
+  border-radius: 4px;
+  box-shadow: 0px 0px 15px 0px #cdd3dd;
+  font-size: 12px;
+  height: 255px;
+  left: 50%;
+  margin-left: -175px;
+  overflow: hidden;
+  position: fixed;
+  width: 350px;
+}
+
+.widget-params pre {
+  width: 600px;
+  background-color: rgb(248, 249, 251) !important;
 }
 
 @keyframes fadein {

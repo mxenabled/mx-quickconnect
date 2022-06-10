@@ -3,7 +3,6 @@ using MX.Platform.CSharp.Client;
 using MX.Platform.CSharp.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System;
 using dotenv.net;
 
 DotEnv.Load(options: new DotEnvOptions(envFilePaths: new[] {"./../.env"}));
@@ -51,15 +50,32 @@ app.MapGet("/api/users", () =>
   return ConvertToSnakeCase(apiInstance.ListUsers());
 });
 
-app.MapPost("/api/get_mxconnect_widget_url", () =>
+app.MapDelete("/api/user/{guid}", (string guid) =>
 {
+  apiInstance.DeleteUser(guid);
+  return JsonConvert.SerializeObject(new { user_guid = guid });
+});
+
+
+app.MapPost("/api/get_mxconnect_widget_url", (IConfiguration config, HttpRequest request) =>
+{
+  var streamReader = new StreamReader(request.Body);
+  var body = streamReader.ReadToEndAsync();
+  var bodyResult = JsonConvert.DeserializeObject<Request>(body.Result);
+
   var acceptLanguage = "en-US";
   var widgetRequest = new WidgetRequest(
       widgetType: "connect_widget",
-      mode: "verification"
+      mode: "verification",
+      uiMessageVersion: 4,
+      waitForFullAggregation: true,
+      includeTransactions: true
   );
   var widgetRequestBody = new WidgetRequestBody(widgetRequest);
-  var userGuid = CreateUser().User.Guid;
+  var userGuid = bodyResult.UserGuid;
+  if (userGuid == null) {
+    userGuid = CreateUser().User.Guid;
+  }
   var result = apiInstance.RequestWidgetURL(userGuid, widgetRequestBody, acceptLanguage);
 
   return ConvertToSnakeCase(result);
@@ -123,3 +139,12 @@ app.MapGet("/users/{userGuid}/members/{memberGuid}/status",
 });
 
 app.Run();
+
+class Request
+{
+  [JsonProperty("user_guid")]
+  public string? UserGuid { get; set; }
+
+  [JsonProperty("user_id")]
+  public string? UserId { get; set; }
+};
