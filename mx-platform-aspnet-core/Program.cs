@@ -3,7 +3,6 @@ using MX.Platform.CSharp.Client;
 using MX.Platform.CSharp.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System;
 using dotenv.net;
 
 DotEnv.Load(options: new DotEnvOptions(envFilePaths: new[] {"./../.env"}));
@@ -57,8 +56,13 @@ app.MapDelete("/api/user/{guid}", (string guid) =>
   return JsonConvert.SerializeObject(new { user_guid = guid });
 });
 
-app.MapPost("/api/get_mxconnect_widget_url", (Request request) =>
+
+app.MapPost("/api/get_mxconnect_widget_url", (IConfiguration config, HttpRequest request) =>
 {
+  var streamReader = new StreamReader(request.Body);
+  var body = streamReader.ReadToEndAsync();
+  var bodyResult = JsonConvert.DeserializeObject<Request>(body.Result);
+
   var acceptLanguage = "en-US";
   var widgetRequest = new WidgetRequest(
       widgetType: "connect_widget",
@@ -68,7 +72,7 @@ app.MapPost("/api/get_mxconnect_widget_url", (Request request) =>
       includeTransactions: true
   );
   var widgetRequestBody = new WidgetRequestBody(widgetRequest);
-  var userGuid = request.user_guid;
+  var userGuid = bodyResult.UserGuid;
   if (userGuid == null) {
     userGuid = CreateUser().User.Guid;
   }
@@ -136,8 +140,11 @@ app.MapGet("/users/{userGuid}/members/{memberGuid}/status",
 
 app.Run();
 
-public class Request
+class Request
 {
-  public string? user_guid { get; set; }
-  public string? user_id { get; set; }
+  [JsonProperty("user_guid")]
+  public string? UserGuid { get; set; }
+
+  [JsonProperty("user_id")]
+  public string? UserId { get; set; }
 };
