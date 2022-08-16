@@ -95,7 +95,6 @@ post '/api/get_mxconnect_widget_url' do
         mode: 'verification',
         ui_message_version: 4,
         include_transactions: true,
-        wait_for_full_aggregation: true,
         current_member_guid: data['current_member_guid']
       )
     )

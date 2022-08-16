@@ -69,7 +69,6 @@ app.post('/api/get_mxconnect_widget_url', async function (request, response) {
         is_mobile_webview: false,
         mode: 'verification',
         ui_message_version: 4,
-        wait_for_full_aggregation: true,
         widget_type: 'connect_widget'
       }
     }
