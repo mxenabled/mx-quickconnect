@@ -63,14 +63,6 @@ You can choose to run **one** of the following backend implementations. Once
 started the backend will be running on http://localhost:8000
 
 ---
-##### Backend (Python)
-```bash
-cd python
-pip3 install -r requirements.txt
-./start.sh
-```
-
----
 #### Backend (Ruby)
 
 ```bash
@@ -85,6 +77,14 @@ bundle install
 cd mx-platform-node
 npm install
 npm start
+```
+
+---
+##### Backend (Python)
+```bash
+cd python
+pip3 install -r requirements.txt
+./start.sh
 ```
 
 ---
