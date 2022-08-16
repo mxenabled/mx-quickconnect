@@ -68,7 +68,6 @@ app.MapPost("/api/get_mxconnect_widget_url", (IConfiguration config, HttpRequest
       widgetType: "connect_widget",
       mode: "verification",
       uiMessageVersion: 4,
-      waitForFullAggregation: true,
       includeTransactions: true
   );
   var widgetRequestBody = new WidgetRequestBody(widgetRequest);
