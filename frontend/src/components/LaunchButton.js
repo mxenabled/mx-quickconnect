@@ -9,9 +9,10 @@ import { Dots } from '@kyper/progressindicators';
 import { Text } from '@kyper/text'
 import { Trash } from '@kyper/icon/Trash'
 
-function LaunchButton({ isLoading, setIsLoading, setUserGuid, setMemberGuid }) {
+function LaunchButton({ setUserGuid, setMemberGuid }) {
   const [connectWidgetUrl, setConnectWidgetUrl] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [latestUsers, setLatestUsers] = useState([]);
 
   useEffect(() => {
@@ -68,7 +69,7 @@ function LaunchButton({ isLoading, setIsLoading, setUserGuid, setMemberGuid }) {
     setIsLoading(true);
     let body = {
       user_id: "",
-      ...(user_guid != null && {user_guid: user_guid})
+      ...(user_guid != null && { user_guid: user_guid })
     }
     const requestOptions = {
       method: 'POST',
@@ -97,9 +98,9 @@ function LaunchButton({ isLoading, setIsLoading, setUserGuid, setMemberGuid }) {
 
   return (
     <div>
-      { errorMessage && (
+      {errorMessage && (
         <div className="alert alert-danger">
-          <strong>Error!</strong> { errorMessage }
+          <strong>Error!</strong> {errorMessage}
         </div>
       )}
       {!isLoading && connectWidgetUrl === "" && (
@@ -170,7 +171,7 @@ function LaunchButton({ isLoading, setIsLoading, setUserGuid, setMemberGuid }) {
                                   marginLeft: 8
                                 }}
                                 width={16}
-                                />
+                              />
                             </div>
                           </td>
                         </tr>
