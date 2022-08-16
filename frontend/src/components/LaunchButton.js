@@ -54,7 +54,7 @@ function LaunchButton({ setUserGuid, setMemberGuid }) {
         throw new Error('Something went wrong')
       })
       .then((res) => {
-        const users = latestUsers.filter(user => user.guid != res.user_guid)
+        const users = latestUsers.filter(user => user.guid !== res.user_guid)
         setLatestUsers(users)
         console.log('deleted', res)
       })
