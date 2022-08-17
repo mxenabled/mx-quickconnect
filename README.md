@@ -49,9 +49,9 @@ Create a .env file at the same level as the `.env.example`.
 Add your `CLIENT_ID` and `API_KEY`.
 You can find these values in your [MX Client Dashboard][]
 
-## 3. Run the MXquickconnect
+## 3. Run the MXquickconnect app
 
-There are two ways of running MX quickconnect app: with or without Docker.
+There are two ways of running this app: with or without Docker.
 If you would like to orchestrate with Docker, skip to the
 [Run with Docker](#run-with-docker) section below.
 
@@ -61,14 +61,6 @@ If you would like to orchestrate with Docker, skip to the
 
 You can choose to run **one** of the following backend implementations. Once
 started the backend will be running on http://localhost:8000
-
----
-##### Backend (Python)
-```bash
-cd python
-pip3 install -r requirements.txt
-./start.sh
-```
 
 ---
 #### Backend (Ruby)
@@ -85,6 +77,14 @@ bundle install
 cd mx-platform-node
 npm install
 npm start
+```
+
+---
+##### Backend (Python)
+```bash
+cd python
+pip3 install -r requirements.txt
+./start.sh
 ```
 
 ---

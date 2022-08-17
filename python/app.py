@@ -71,7 +71,6 @@ with mx_platform_python.ApiClient(configuration, 'Accept', 'application/vnd.mx.a
         mode = 'verification',
         ui_message_version = 4,
         include_transactions = True,
-        wait_for_full_aggregation = True,
       )
 
       if current_member_guid:

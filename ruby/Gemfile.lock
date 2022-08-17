@@ -62,6 +62,7 @@ DEPENDENCIES
   dotenv (~> 2.7)
   httparty (~> 0.20.0)
   mx-platform-ruby
+  rack (>= 2.2.3.1)
   rspec-core
   sinatra
   sinatra-cross_origin (~> 0.3.1)
