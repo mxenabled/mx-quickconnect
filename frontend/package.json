@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "engines" : { 
-    "npm" : "^8.15.0",
-    "node" : "^16.17.0"
+    "node" : "^16.0.0"
   },
   "dependencies": {
     "@kyper/button": "^3.1.0",
