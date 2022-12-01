@@ -9,6 +9,8 @@ gem 'dotenv', '~> 2.7'
 
 gem 'mx-platform-ruby'
 
+gem 'posthog-ruby'
+
 group :test do
   # Test it with RSpec (BDD for Ruby)
   gem 'rspec-core'

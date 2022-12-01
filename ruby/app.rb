@@ -8,9 +8,10 @@ require_relative 'test-setup'
 require 'base64'
 require 'date'
 require 'json'
+require 'mx-platform-ruby'
+require 'posthog'
 require 'sinatra'
 require 'sinatra/cross_origin'
-require 'mx-platform-ruby'
 
 set :port, ENV['APP_PORT'] || 8000
 
@@ -37,6 +38,12 @@ end
 api_client = ::MxPlatformRuby::ApiClient.new
 api_client.default_headers['Accept'] = 'application/vnd.mx.api.v1+json'
 mx_platform_api = ::MxPlatformRuby::MxPlatformApi.new(api_client)
+
+posthog = PostHog::Client.new({
+                                api_key: ENV['POST_HOG_API_KEY'],
+                                host: ENV['POST_HOG_HOST'], # You can remove this line if you're using https://app.posthog.com
+                                on_error: proc { |_status, msg| print msg }
+                              })
 
 # Checks the env file and production config if in production mode
 test_config(mx_platform_api)
@@ -69,13 +76,11 @@ get '/api/users' do
 end
 
 delete '/api/user/:guid' do
-  begin
-    mx_platform_api.delete_user(params[:guid])
-    { :user_guid => params[:guid] }.to_json
-  rescue ::MxPlatformRuby::ApiError => e
-    puts "Error when calling MxPlatformApi->delete_user: #{e.message}"
-    [400, e.response_body]
-  end
+  mx_platform_api.delete_user(params[:guid])
+  { user_guid: params[:guid] }.to_json
+rescue ::MxPlatformRuby::ApiError => e
+  puts "Error when calling MxPlatformApi->delete_user: #{e.message}"
+  [400, e.response_body]
 end
 
 post '/api/get_mxconnect_widget_url' do
@@ -87,6 +92,13 @@ post '/api/get_mxconnect_widget_url' do
 
     # create user if no user_guid given
     user_guid = data['user_guid'].nil? ? create_user(external_id, mx_platform_api) : data['user_guid']
+    posthog.capture({
+                      distinct_id: user_guid,
+                      event: 'widget_request_api',
+                      properties: {
+                        test: '123'
+                      }
+                    })
 
     request_body = ::MxPlatformRuby::WidgetRequestBody.new(
       widget_url: ::MxPlatformRuby::WidgetRequest.new(
@@ -111,12 +123,23 @@ end
 get '/users/:user_guid/members/:member_guid/verify' do
   content_type :json
   begin
+    posthog.capture({
+                      distinct_id: params[:user_guid],
+                      event: 'begin verify job'
+                    })
     # if widget was not in verification mode
     # mx_platform_api.verify_member(member_guid, user_guid)
     # poll member status answer MFAs
     response = mx_platform_api.list_account_numbers_by_member(params[:member_guid], params[:user_guid])
     response.to_hash.to_json
   rescue ::MxPlatformRuby::ApiError => e
+    posthog.capture({
+                      distinct_id: params[:user_guid],
+                      event: 'verify failed',
+                      properties: {
+                        error_message: "Error when calling MxPlatformApi->list_account_numbers_by_member: #{e.message}"
+                      }
+                    })
     puts "Error when calling MxPlatformApi->list_account_numbers_by_member: #{e.message}"
     [400, e.response_body]
   end
@@ -125,6 +148,10 @@ end
 post '/users/:user_guid/members/:member_guid/identify' do
   content_type :json
   begin
+    posthog.capture({
+                      distinct_id: params[:user_guid],
+                      event: 'begin identify job'
+                    })
     response = mx_platform_api.identify_member(
       params[:member_guid],
       params[:user_guid]
@@ -143,6 +170,10 @@ get '/users/:user_guid/members/:member_guid/identify' do
       params[:member_guid],
       params[:user_guid]
     )
+    posthog.capture({
+                      distinct_id: params[:user_guid],
+                      event: 'finish identify job', properties: { response: response.to_hash }
+                    })
     response.to_hash.to_json
   rescue ::MxPlatformRuby::ApiError => e
     puts "Error when calling MxPlatformApi->list_account_owners_by_member: #{e.message}"
@@ -154,6 +185,10 @@ get '/users/:user_guid/members/:member_guid/check_balance' do
   content_type :json
   begin
     response = mx_platform_api.list_user_accounts(params[:user_guid])
+    posthog.capture({
+                      distinct_id: params[:user_guid],
+                      event: 'finish check_balance job', properties: { response: response.to_hash }
+                    })
     response.to_hash.to_json
   rescue ::MxPlatformRuby::ApiError => e
     puts "Error when calling MxPlatformApi->list_user_accounts: #{e.message}"
@@ -164,6 +199,10 @@ end
 post '/users/:user_guid/members/:member_guid/check_balance' do
   content_type :json
   begin
+    posthog.capture({
+                      distinct_id: params[:user_guid],
+                      event: 'begin check_balance job'
+                    })
     response = mx_platform_api.check_balances(
       params[:member_guid],
       params[:user_guid]
@@ -182,6 +221,10 @@ get '/users/:user_guid/members/:member_guid/transactions' do
       params[:member_guid],
       params[:user_guid]
     )
+    posthog.capture({
+                      distinct_id: params[:user_guid],
+                      event: 'getting transactions', properties: { response: response.to_hash }
+                    })
     response.to_hash.to_json
   rescue ::MxPlatformRuby::ApiError => e
     puts "Error when calling MxPlatformApi->list_transactions_by_member: #{e.message}"
@@ -196,6 +239,10 @@ get '/users/:user_guid/members/:member_guid/status' do
       params[:member_guid],
       params[:user_guid]
     )
+    posthog.capture({
+                      distinct_id: params[:user_guid],
+                      event: 'getting member status', properties: { response: response.to_hash }
+                    })
     response.to_hash.to_json
   rescue ::MxPlatformRuby::ApiError => e
     puts "Error when calling MxPlatformApi->read_member_status: #{e.message}"
