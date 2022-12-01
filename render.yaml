@@ -1,0 +1,45 @@
+services:
+  - type: web
+    plan: free
+    name: api
+    env: ruby
+    repo: https://github.com/mxenabled/mx-quickconnect
+    branch: posthog
+    rootDir: ruby
+    scaling:
+      minInstances: 1
+      maxInstances: 3
+      targetMemoryPercent: 60 # optional if targetCPUPercent is set
+      targetCPUPercent: 60 # optional if targetMemory is set
+    buildCommand: bundle install
+    startCommand: bundle exec ruby app.rb
+    domains:
+      - test0.render.com
+    envVars:
+      - key: STRIPE_API_KEY
+        value: dummy
+  - type: web
+    name: frontend
+    rootDir: frontend
+    repo: https://github.com/mxenabled/mx-quickconnect
+    branch: posthog
+    env: static
+    buildCommand: npm run build
+    staticPublishPath: ./build
+    pullRequestPreviewsEnabled: true # optional
+    buildFilter:
+      paths:
+      - src/**/*.js
+      ignoredPaths:
+      - src/**/*.test.js
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: sameorigin
+    routes:
+      - type: redirect
+        source: /old
+        destination: /new
+      - type: rewrite
+        source: /a/*
+        destination: /a

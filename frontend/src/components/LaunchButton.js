@@ -9,7 +9,7 @@ import { Dots } from '@kyper/progressindicators';
 import { Text } from '@kyper/text'
 import { Trash } from '@kyper/icon/Trash'
 
-function LaunchButton({ setUserGuid, setMemberGuid }) {
+function LaunchButton({ setUserGuid, setMemberGuid, posthog }) {
   const [connectWidgetUrl, setConnectWidgetUrl] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -218,6 +218,14 @@ function LaunchButton({ setUserGuid, setMemberGuid }) {
             widgetUrl={connectWidgetUrl}
             onEvent={(event) => {
               console.log('MX PostMessage: ', event)
+              const user_guid = event.metadata.user_guid;
+              if (user_guid) {
+                console.log('identifying user on posthog');
+                posthog.identify(user_guid);
+              }
+
+              posthog.capture(`Widget Event: ${event.type}`);
+
               if (event.type === 'mx/connect/memberConnected') {
                 setUserGuid(event.metadata.user_guid)
                 setMemberGuid(event.metadata.member_guid)
