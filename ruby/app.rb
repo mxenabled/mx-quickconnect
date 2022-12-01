@@ -92,13 +92,6 @@ post '/api/get_mxconnect_widget_url' do
 
     # create user if no user_guid given
     user_guid = data['user_guid'].nil? ? create_user(external_id, mx_platform_api) : data['user_guid']
-    posthog.capture({
-                      distinct_id: user_guid,
-                      event: 'widget_request_api',
-                      properties: {
-                        test: '123'
-                      }
-                    })
 
     request_body = ::MxPlatformRuby::WidgetRequestBody.new(
       widget_url: ::MxPlatformRuby::WidgetRequest.new(
@@ -109,6 +102,15 @@ post '/api/get_mxconnect_widget_url' do
         include_transactions: true,
         current_member_guid: data['current_member_guid']
       )
+    )
+    posthog.capture(
+      {
+        distinct_id: user_guid,
+        event: 'widget_request_api',
+        properties: {
+          request_body: request_body
+        }
+      }
     )
     response = mx_platform_api.request_widget_url(user_guid, request_body)
     response.to_hash.to_json
