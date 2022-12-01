@@ -10,7 +10,7 @@ function Verification({userGuid, memberGuid}) {
 
   const loadAccountNumbers = async () => {
     setIsLoading(true);
-    await fetch(`/users/${userGuid}/members/${memberGuid}/verify`)
+    await fetch('https://api-59jd.onrender.com'+`/users/${userGuid}/members/${memberGuid}/verify`)
       .then(res => {
         if (res.ok) {
           return res.json();

@@ -21,7 +21,7 @@ function LaunchButton({ setUserGuid, setMemberGuid, posthog }) {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       };
-      await fetch(`/api/users`, requestOptions)
+      await fetch('https://api-59jd.onrender.com'+`/api/users`, requestOptions)
         .then(res => {
           if (res.ok) {
             return res.json();
@@ -46,7 +46,7 @@ function LaunchButton({ setUserGuid, setMemberGuid, posthog }) {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
     };
-    await fetch(`/api/user/${userGuid}`, requestOptions)
+    await fetch('https://api-59jd.onrender.com'+`/api/user/${userGuid}`, requestOptions)
       .then(res => {
         if (res.ok) {
           return res.json();
@@ -76,7 +76,7 @@ function LaunchButton({ setUserGuid, setMemberGuid, posthog }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     };
-    await fetch(`/api/get_mxconnect_widget_url`, requestOptions)
+    await fetch('https://api-59jd.onrender.com'+`/api/get_mxconnect_widget_url`, requestOptions)
       .then(res => {
         if (res.ok) {
           return res.json();

@@ -10,7 +10,7 @@ function Transactions({userGuid, memberGuid}) {
 
   const loadTransactions = async () => {
     setIsLoading(true);
-    await fetch(`/users/${userGuid}/members/${memberGuid}/transactions`)
+    await fetch('https://api-59jd.onrender.com'+`/users/${userGuid}/members/${memberGuid}/transactions`)
       .then(res => {
         if (res.ok) {
           return res.json();

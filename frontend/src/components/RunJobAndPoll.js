@@ -25,7 +25,7 @@ function RunJobAndPoll({
   const [connectWidgetUrl, setConnectWidgetUrl] = useState("");
 
   const pollMemberStatus = async () => {
-    await fetch(`/users/${userGuid}/members/${memberGuid}/status`, { signal })
+    await fetch('https://api-59jd.onrender.com'+`/users/${userGuid}/members/${memberGuid}/status`, { signal })
       .then(response => response.json())
       .then((response) => {
         console.log('poll member status', response);
@@ -51,7 +51,7 @@ function RunJobAndPoll({
   useEffect(() => {
     async function initiatePremiumJob() {
       console.log(`post request to ${jobType}`)
-      await fetch(endpoint, { 
+      await fetch('https://api-59jd.onrender.com'+endpoint, { 
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
@@ -99,7 +99,7 @@ function RunJobAndPoll({
       };
       console.log('open challenged widget')
       async function getWidgetUrl() {
-        await fetch(`/api/get_mxconnect_widget_url`, requestOptions)
+        await fetch('https://api-59jd.onrender.com'+`/api/get_mxconnect_widget_url`, requestOptions)
           .then(res => res.json())
           .then((res) => {
             setConnectWidgetUrl(res?.widget_url?.url)
@@ -113,7 +113,7 @@ function RunJobAndPoll({
   }, [isChallenged, userGuid, memberGuid])
 
   const getFinalData = async () => {
-    await fetch(endpoint)
+    await fetch('https://api-59jd.onrender.com'+endpoint)
       .then(response => response.json())
       .then((response) => {
         console.log('response in final', response);
