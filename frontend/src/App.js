@@ -9,7 +9,7 @@ function App() {
   const [memberGuid, setMemberGuid] = useState(null);
 
   useEffect(() => {
-    posthog.init('phc_kequjnByvXoLjRawiaNEMoai4tcBWsi9iLlIWPYB7JS', { api_host: 'https://app.posthog.com', autocapture: false })
+    posthog.init(process.env.REACT_APP_POST_HOG_API_KEY, { api_host: 'https://app.posthog.com', autocapture: true })
   }, [])
 
 
