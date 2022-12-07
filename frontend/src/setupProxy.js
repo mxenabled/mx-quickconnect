@@ -1,5 +1,7 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
+const envTarget = process.env.DOCKER_PROXY_URL || "localhost"
+
 const filter = function (pathname, req) {
   return pathname.match('/api') || pathname.match('/users/');
 };
@@ -7,7 +9,7 @@ const filter = function (pathname, req) {
 module.exports = function(app) {
   app.use(
     createProxyMiddleware(filter, {
-      target: 'http://localhost:8000',
+      target: `http://${envTarget}:8000`,
       changeOrigin: true,
     })
   );
