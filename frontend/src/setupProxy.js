@@ -7,7 +7,7 @@ const filter = function (pathname, req) {
 module.exports = function(app) {
   app.use(
     createProxyMiddleware(filter, {
-      target: 'http://localhost:8000',
+      target: 'http://node:8000',
       changeOrigin: true,
     })
   );

@@ -16,6 +16,7 @@ services:
     build:
       context: .
       dockerfile: ./mx-platform-node/Dockerfile
+    env_file: .env
     ports:
       - 8000:8000
   python:
