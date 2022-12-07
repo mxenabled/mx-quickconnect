@@ -16,6 +16,7 @@ set :port, ENV['APP_PORT'] || 8000
 
 configure do
   enable :cross_origin
+  set :protection, :except => [:json_csrf]
 end
 
 options '*' do
@@ -69,13 +70,11 @@ get '/api/users' do
 end
 
 delete '/api/user/:guid' do
-  begin
-    mx_platform_api.delete_user(params[:guid])
-    { :user_guid => params[:guid] }.to_json
-  rescue ::MxPlatformRuby::ApiError => e
-    puts "Error when calling MxPlatformApi->delete_user: #{e.message}"
-    [400, e.response_body]
-  end
+  mx_platform_api.delete_user(params[:guid])
+  { :user_guid => params[:guid] }.to_json
+rescue ::MxPlatformRuby::ApiError => e
+  puts "Error when calling MxPlatformApi->delete_user: #{e.message}"
+  [400, e.response_body]
 end
 
 post '/api/get_mxconnect_widget_url' do

@@ -119,8 +119,10 @@ npm start
 _Make sure you have `docker comunity 20.10.13 ` and `docker compose 2.3.4`
 or later installed._
 
-Edit your `docker-compose.yml` file and remove or comment out backends you would
-not like to run. Just make sure you have at least one backend and frontend. Then:
+Edit your `docker-compose.yml` file:
+  1. Remove or comment out backends you would not like to run
+  2. Uncomment the DOCKER_PROXY_URL that corresponds to the backend you're using
+  3. Make sure you have at least one backend, one DOCKER_PROXY_URL, and the frontend
 
 ```bash
 docker-compose up

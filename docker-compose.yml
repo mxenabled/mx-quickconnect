@@ -1,11 +1,18 @@
 version: "3.7"
 
+x-backend-variable: &backend-variable
+  # DOCKER_PROXY_URL: aspnet-core # not working with docker yet
+  # DOCKER_PROXY_URL: node
+  # DOCKER_PROXY_URL: python
+  # DOCKER_PROXY_URL: ruby
+
 services:
   aspnet-core:
     build:
       context: .
       dockerfile: mx-platform-aspnet-core/Dockerfile
     entrypoint: sh -c "dotnet mx-platform-aspnet-core.dll"
+    env_file: .env
     environment:
       - ASPNETCORE_ENVIRONMENT=development
     image: mx-quickstart-aspnet
@@ -16,6 +23,7 @@ services:
     build:
       context: .
       dockerfile: ./mx-platform-node/Dockerfile
+    env_file: .env
     ports:
       - 8000:8000
   python:
@@ -23,6 +31,7 @@ services:
     build:
       context: .
       dockerfile: ./python/Dockerfile
+    env_file: .env
     ports:
       - 8000:8000
   ruby:
@@ -39,3 +48,5 @@ services:
       dockerfile: ./frontend/Dockerfile
     ports:
       - 3000:3000
+    environment:
+      <<: *backend-variable
