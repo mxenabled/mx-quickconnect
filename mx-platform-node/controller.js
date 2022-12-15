@@ -21,7 +21,7 @@ const configuration = new Configuration({
   password: process.env.API_KEY,
 
   // Configure environment. https://int-api.mx.com for development, https://api.mx.com for production
-  basePath: 'https://int-api.mx.com',
+  basePath: process.env.DEVELOPMENT_ENVIRONMENT == 'production' ? 'https://api.mx.com' : 'https://int-api.mx.com',
 
   baseOptions: {
     headers: {
