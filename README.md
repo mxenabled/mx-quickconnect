@@ -1,10 +1,12 @@
 # MXquickconnect
 
 MXquickconnect is a sample application which anyone can clone and use their MX
-client credentials to interface with common MX use cases. It is meant to help
-a developer see a sample of what MX has to offer while at the same time
-providing some frontend and backend code which can be extracted into any
-application.
+client credentials to interface with common MX use cases using Platform API 
+and the javascript widget. It is meant to help a developer see a sample of 
+what MX has to offer while at the same time providing some frontend and backend 
+code which can be extracted into any application.
+
+:warning: **This is only for Platform API users**
 
 ## Table of contents
 
