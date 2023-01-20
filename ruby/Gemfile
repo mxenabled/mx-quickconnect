@@ -14,7 +14,7 @@ group :test do
   gem 'rspec-core'
 end
 
-gem 'rack', '>= 2.2.3.1'
+gem 'rack', '>= 2.2.6.2'
 
 gem 'httparty', '~> 0.20.0'
 
