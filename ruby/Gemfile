@@ -16,6 +16,6 @@ end
 
 gem 'rack', '>= 2.2.3.1'
 
-gem 'httparty', '~> 0.20.0'
+gem 'httparty', '~> 0.21.0'
 
 gem 'colorize', '~> 0.8.1'
