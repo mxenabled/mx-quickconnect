@@ -34,26 +34,19 @@ GEM
     mime-types-data (3.2022.0105)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
-    mustermann (1.1.1)
-      ruby2_keywords (~> 0.0.1)
     mx-platform-ruby (0.13.1)
       faraday (~> 1.0, >= 1.0.1)
-    rack (2.2.3.1)
-    rack-protection (2.2.0)
-      rack
+    rack (3.0.4.2)
     rspec-core (3.11.0)
       rspec-support (~> 3.11.0)
     rspec-support (3.11.0)
     ruby2_keywords (0.0.5)
-    sinatra (2.2.0)
-      mustermann (~> 1.0)
-      rack (~> 2.2)
-      rack-protection (= 2.2.0)
-      tilt (~> 2.0)
+    sinatra (1.0)
+      rack (>= 1.0)
     sinatra-cross_origin (0.3.2)
-    tilt (2.0.10)
 
 PLATFORMS
+  ruby
   x86_64-darwin-19
   x86_64-darwin-20
 
@@ -62,10 +55,10 @@ DEPENDENCIES
   dotenv (~> 2.7)
   httparty (~> 0.20.0)
   mx-platform-ruby
-  rack (>= 2.2.3.1)
+  rack (>= 2.2.6.3)
   rspec-core
   sinatra
   sinatra-cross_origin (~> 0.3.1)
 
 BUNDLED WITH
-   2.3.6
+   2.1.4
