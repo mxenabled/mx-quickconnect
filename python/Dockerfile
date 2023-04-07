@@ -1,4 +1,4 @@
-FROM python:3.8.5-slim
+FROM python:3.10.10-slim
 ENV FLASK_APP=app
 WORKDIR /app
 COPY python/requirements.txt .
