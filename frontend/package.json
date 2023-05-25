@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "engines" : {},
+  "engines": {},
   "dependencies": {
     "@kyper/button": "^3.1.0",
     "@kyper/icon": "^1.8.0",
@@ -16,9 +16,12 @@
     "@testing-library/user-event": "^13.5.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
-    "react-scripts": "5.0.0",
+    "react-scripts": "5.0.1",
     "react-syntax-highlighter": "^15.5.0",
     "web-vitals": "^2.1.4"
+  },
+  "overrides": {
+    "@svgr/webpack": "$@svgr/webpack"
   },
   "scripts": {
     "start": "react-app-rewired start",
@@ -52,6 +55,7 @@
     "@babel/preset-react": "^7.16.7",
     "customize-cra": "^1.0.0",
     "http-proxy-middleware": "^2.0.6",
-    "react-app-rewired": "^2.2.1"
+    "react-app-rewired": "^2.2.1",
+    "@svgr/webpack": "^6.2.1"
   }
 }

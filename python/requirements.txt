@@ -13,5 +13,5 @@ python-dotenv==0.20.0
 requests==2.31.0
 six==1.16.0
 urllib3==1.26.9
-Werkzeug==2.1.1
+Werkzeug==2.2.3
 yarg==0.1.9
