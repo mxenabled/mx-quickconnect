@@ -29,7 +29,7 @@ function Transactions({userGuid, memberGuid}) {
           code: '400',
           type: 'Bad Request',
           message: 'Something happend and you were unable to get transactions',
-          link: 'https://docs.mx.com/api#core_resources_transactions_list_transactions_by_member'
+          link: 'https://docs.mx.com/api-reference/platform-api/reference/list-transactions-by-member'
         })
       });
   }
@@ -37,7 +37,7 @@ function Transactions({userGuid, memberGuid}) {
   return (
     <div style={{marginTop: '24px'}}>
       <MXEndpoint
-        docsLink="https://docs.mx.com/api#core_resources_transactions_list_transactions_by_member"
+        docsLink="https://docs.mx.com/api-reference/platform-api/reference/list-transactions-by-member"
         title="List Transactions"
         finalDataUrl="/users/{user_guid}/members/{member_guid}/transactions"
         jobType="Transactions"

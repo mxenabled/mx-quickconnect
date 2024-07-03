@@ -25,7 +25,7 @@ function Identity({memberGuid, userGuid}) {
   return (
     <div style={{marginTop: '24px'}}>
       <MXEndpoint
-        docsLink="https://docs.mx.com/api#identification_identity"
+        docsLink="https://docs.mx.com/products/connectivity/account-owner-identification"
         title="Identify Member"
         finalDataUrl="/users/{user_guid}/members/{member_guid}/account_owners"
         jobType="Identity"
