@@ -85,7 +85,7 @@ function MXEndpoint({
             </div>
             {showNotice && (
               <Text as="ParagraphSmall" color="secondary" tag="p">
-                Notice: The first two parts were completed automatically in the widget because it was configured to <a href="https://docs.mx.com/api#connect_request_a_url" target="_blank" rel="noreferrer">{getNoticeMessage()}.</a>
+                Notice: The first two parts were completed automatically in the widget because it was configured to <a href="https://docs.mx.com/api-reference/platform-api/reference/request-widget-url" target="_blank" rel="noreferrer">{getNoticeMessage()}.</a>
               </Text>
             )}
             <div className="mt-8 flex-align">

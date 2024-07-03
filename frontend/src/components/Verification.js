@@ -30,14 +30,14 @@ function Verification({userGuid, memberGuid}) {
           code: '400',
           type: 'Bad Request',
           message: 'You dont have access to this premium feature.',
-          link: 'https://docs.mx.com/api#verification_mx_widgets'
+          link: 'https://docs.mx.com/api-reference/platform-api/reference/verify-member'
         })
       });
   }
 
   return (
     <MXEndpoint
-        docsLink="https://docs.mx.com/api#verification_mx_widgets"
+        docsLink="https://docs.mx.com/api-reference/platform-api/reference/verify-member"
         error={error}
         finalDataUrl="/users/{user_guid}/members/{member_guid}/account_numbers"
         jobType="Verification"

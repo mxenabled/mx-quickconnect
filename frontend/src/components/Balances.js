@@ -24,7 +24,7 @@ function Balances({memberGuid, userGuid}) {
   return (
     <div style={{marginTop: '24px'}}>
       <MXEndpoint
-        docsLink="https://docs.mx.com/api#core_resources_members_check_balances"
+        docsLink="https://docs.mx.com/products/connectivity/balance-checks"
         title="Check Balances"
         finalDataUrl="/users/{user_guid}/accounts"
         jobType="Balance"
