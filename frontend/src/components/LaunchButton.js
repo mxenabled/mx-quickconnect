@@ -209,7 +209,7 @@ function LaunchButton({ setUserGuid, setMemberGuid }) {
                   password
                 </td>
                 <td>
-                  correct, challenge, options, image, <a href="https://docs.mx.com/api/guides/testing#test_credentials" target="_blank" rel="noreferrer">see docs for more scenarios</a>
+                  correct, challenge, options, image, <a href="https://docs.mx.com/resources/test-platform/mxbank/#mx-bank-testing-scenarios" target="_blank" rel="noreferrer">see docs for more scenarios</a>
                 </td>
               </tr>
             </tbody>
