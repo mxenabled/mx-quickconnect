@@ -13,7 +13,7 @@
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "mx-platform-node": "^0.9.2",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.17"
   },
   "type": "module"
 }
