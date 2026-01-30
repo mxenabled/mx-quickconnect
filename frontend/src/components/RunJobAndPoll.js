@@ -4,9 +4,9 @@ import MXConnectWidget from './MXConnectWidget';
 
 
 const LINKS = {
-  balances: 'https://docs.mx.com/api#core_resources_members_check_balances',
-  holdings: 'https://docs.mx.com/api#investments_holdings',
-  identity: 'https://docs.mx.com/api#identification_identity'
+  balances: 'https://docs.mx.com/api-reference/platform-api/reference/check-balances',
+  holdings: 'https://docs.mx.com/api-reference/platform-api/reference/list-holdings',
+  identity: 'https://docs.mx.com/api-reference/platform-api/reference/identify-member'
 }
 
 function RunJobAndPoll({
