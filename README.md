@@ -1,5 +1,7 @@
 # MXquickconnect
 
+**This repository is not actively maintained and contains security vulnerabilities. It can be used as an example to get started, but should not be used as production code.**
+
 MXquickconnect is a sample application which anyone can clone and use their MX
 client credentials to interface with common MX use cases using Platform API 
 and the javascript widget. It is meant to help a developer see a sample of 
